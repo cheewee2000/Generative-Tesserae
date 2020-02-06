@@ -12,18 +12,22 @@ PeasyCam cam;
 //breed
 
 
-int populationSize=25;//make square rootable
 Population population;  // Population
-float mutationRate = 0.005;
-int margin=40;
+float mutationRate = 0.00005;
+int margin=25;
 
-int xCount=5; //clusters per row in population
-float cellR=10; //cell radius
-int nCells=8; //nunmber of cells in cluster row and column
+int xCount=6; //clusters per row in population
+int populationSize=xCount*xCount;//make square rootable
+
+float cellR=8; //cell radius
+int nCells=12; //nunmber of cells in cluster row and column
+boolean runOptimize=false;
 
 void setup() {
   size(900, 900, P3D);
   cam = new PeasyCam(this, 900);
+  cam.setWheelScale(.1); // 1.0 by default
+
   population = new Population(mutationRate, populationSize);
 }
 
@@ -32,6 +36,17 @@ void draw() {
 
   background(200);
   lights();
+  //population.testFitness();
+
+  if (runOptimize) {
+
+    population.selection();
+    population.reproduction();
+    population.cullIslands();
+  }
+
+  population.testFitness();
+
   population.live();
 
 
@@ -43,24 +58,26 @@ void draw() {
 void keyPressed() {
 
   if (keyCode == ENTER ) {
-    population.testFitness();
-    population.selection();
-    population.reproduction();
+    runOptimize=!runOptimize;
   }
-  if (key == 'm' ) {
-    population.mutate();
+
+  if (key == 'm' ) { //force drastic mutation
+    population.mutate(.2);
   }
-  
-    if (key == 'g' ) {
+
+  if (key == 'g' ) {
     population.grow();
   }
-  
+
+  if (key == 'f' ) {
+    population.testFitness();
+  }
+
   if (key == 'c' ) {
     population.cullIslands();
   }
-  
-    if (key == 'r' ) {
+
+  if (key == 'r' ) {
     setup();
   }
-  
 }

@@ -44,15 +44,23 @@ class Cluster {
 
 
   void testFitness() {
-    int neighbors=0;
-    for (int i = 0; i < dna.cells.length; i++) {
-      neighbors+=dna.cells[i].neighbors;
-    }
-    if(neighbors>300)fitness=10;
-    else fitness=1;
+    //int neighbors=0;
+    //for (int i = 0; i < dna.cells.length; i++) {
+    //  neighbors+=dna.cells[i].neighbors;
+    //}
+    //if(neighbors>300)fitness=10;
+    //else fitness=1;
     //fitness=01;
     //fitness+=random(100);
+    
+    fitness=dna.getSurfaceVolumeRatio();
   }
+
+
+
+
+
+
 
   void cullIslands() {
     Cell[] tempCells = new Cell[dna.cells.length];
@@ -71,23 +79,10 @@ class Cluster {
           //tempCells[i].isVisible=true;
         }
       }
-      //dna.cells[i].
     }
     dna.cells=tempCells;
   }
 
-
-
-
-
-
-
-  //float getSurfaceAreaFitness() {
-  //  for (int i = 0; i < dna.cells.length; i++) {
-  //    //dna.cells[i].getExposedSurfaces();
-  //  }
-  //  return f;
-  //}
 
 
   float getFitness() {
@@ -105,7 +100,8 @@ class Cell {
   float x, y, z;
   boolean isVisible=false;
   int neighbors=0;
-
+  boolean hasBeenVisible=false;
+  
   Cell(float _x, float _y, float _z) {
     x=_x;
     y=_y;
@@ -121,6 +117,7 @@ class Cell {
 
   void draw() {
     if (isVisible) {
+      hasBeenVisible=true;
       colorMode(HSB, 100);
       noStroke();
       fill(70+(6.0-neighbors)/6.0*30.0, 255, 100);

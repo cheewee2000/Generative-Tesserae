@@ -18,7 +18,7 @@ class DNA {
       }
     }
     //turn one cell on
-    cells[int(random(count))].isVisible=true;
+    cells[int(nCells/2+nCells*nCells/2+nCells*nCells*nCells/2)].isVisible=true;
   }
 
   // Constructor #2, creates the instance based on an existing array
@@ -45,15 +45,18 @@ class DNA {
 
   // Based on a mutation probability, picks a new random Vector
   void mutate(float m) {
-
-
-    if (random(1.0) < m) {
-      //cells[i].isVisible=!cells[i].isVisible;
+    for (int i = 0; i < cells.length; i++) {
+      if (random(1.0) < m) {
+        if (cells[i].hasBeenVisible) {
+          cells[i].isVisible=!cells[i].isVisible;
+        }
+      }
     }
   }
 
-  void grow(float m) {
 
+
+  void grow() {
     //copy cells
     Cell[] tempCells = new Cell[cells.length];
     for (int i = 0; i < cells.length; i++) {
@@ -62,21 +65,34 @@ class DNA {
 
     for (int i = 0; i < cells.length; i++) {
       //grow
-      int neighbors [] =new int[30];
+      int neighbors [] =new int[90];
       if (cells[i].isVisible) {
         int count=0;
         for (int j = 0; j < cells.length; j++)             
-          if (dist(cells[i].x,cells[i].y,cells[i].z,cells[j].x,cells[j].y,cells[j].z)<=cellR)
+          if (i!=j && dist(cells[i].x, cells[i].y, cells[i].z, cells[j].x, cells[j].y, cells[j].z)<=cellR)
           {
             neighbors[count]=j;
             count++;
           }
         //pick random neighbor
-        tempCells[neighbors[int(random(count-1))]].isVisible=true;
+        tempCells[neighbors[int(random(count))]].isVisible=true;
       }
     }
 
     cells=tempCells;
+  }
+
+
+
+  float getSurfaceVolumeRatio() {
+    float neighborTotal=1;
+    for (int i = 0; i < cells.length; i++) {
+      //add up neighbor score
+      neighborTotal+=cells[i].neighbors;
+    }
+    println(neighborTotal);
+
+    return cells.length/neighborTotal;
   }
 
 

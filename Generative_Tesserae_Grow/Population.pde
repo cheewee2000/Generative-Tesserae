@@ -67,36 +67,39 @@ class Population {
 
   // Making the next generation
   void reproduction() {
-    // Refill the population with children from the mating pool
-    for (int i = 0; i < clusters.length; i++) {
-      // Sping the wheel of fortune to pick two parents
-      int m = int(random(matingPool.size()));
-      int d = int(random(matingPool.size()));
-      // Pick two parents
-      Cluster mom = matingPool.get(m);
-      Cluster dad = matingPool.get(d);
-      //Cluster dad = matingPool.get(m);
+    if (matingPool.size()>0) 
+    {
+      // Refill the population with children from the mating pool
+      for (int i = 0; i < clusters.length; i++) {
+        // Sping the wheel of fortune to pick two parents
+        int m = int(random(matingPool.size()));
+        int d = int(random(matingPool.size()));
+        // Pick two parents
+        Cluster mom = matingPool.get(m);
+        Cluster dad = matingPool.get(d);
+        //Cluster dad = matingPool.get(m);
 
-      // Get their genes
-      DNA momgenes = mom.getDNA();
-      DNA dadgenes = dad.getDNA();
-      // Mate their genes
-      DNA child = momgenes.crossover(dadgenes);
-      // Mutate their genes
-      child.mutate(mutationRate);
-      // Fill the new population with the new child
-      int y=(i/xCount);
-      //PVector pos=new PVector(margin/(xCount)/2+(i*cellR*scale) % (width-margin)+i%xCount*(margin/(xCount)), margin/(xCount)/2+y*cellR*scale + y*(margin/xCount));
-      clusters[i] = new Cluster(clusters[i].pos, child);
+        // Get their genesgggg
+        DNA momgenes = mom.getDNA();
+        DNA dadgenes = dad.getDNA();
+        // Mate their genes
+        DNA child = momgenes.crossover(dadgenes);
+        // Mutate their genes
+        child.mutate(mutationRate);
+        // Fill the new population with the new child
+        int y=(i/xCount);
+        //PVector pos=new PVector(margin/(xCount)/2+(i*cellR*scale) % (width-margin)+i%xCount*(margin/(xCount)), margin/(xCount)/2+y*cellR*scale + y*(margin/xCount));
+        clusters[i] = new Cluster(clusters[i].pos, child);
+      }
+      generations++;
     }
-    generations++;
   }
 
 
-  void mutate() {
+  void mutate(float _mutationRate) {
     for (int i = 0; i < clusters.length; i++) {
       DNA dna=clusters[i].getDNA();
-      dna.mutate(mutationRate);
+      dna.mutate(_mutationRate);
     }
   }
 
@@ -104,10 +107,10 @@ class Population {
   void grow() {
     for (int i = 0; i < clusters.length; i++) {
       DNA dna=clusters[i].getDNA();
-      dna.grow(mutationRate);
+      dna.grow();
     }
   }
-  
+
 
   // Find highest fintess for the population
   float getMinFitness() {
