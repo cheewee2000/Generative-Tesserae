@@ -11,6 +11,14 @@ PeasyCam cam;
 //calculate explosed faces (not sharing)
 //breed
 
+//truncated octa
+//branch length fitness
+//filled out ports, all hex ports
+
+//3D arrat arranged in fitness level
+//user selection of winners
+
+
 
 Population population;  // Population
 float mutationRate = 0.00005;
