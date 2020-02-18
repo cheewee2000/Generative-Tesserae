@@ -3,7 +3,7 @@ import peasy.PeasyCam;
 PeasyCam cam;
 
 tOcta to;
-
+float sc=2;
 void setup() {
   size(1000, 1000, P3D);
   cam = new PeasyCam(this, 400);
@@ -13,8 +13,28 @@ void setup() {
 void draw() {
   background(200);
   //lights();
-  scale(100);
-  to.draw();
+  scale(20);
+
+  float [] u = {0, 0, sqrt(2)};
+  float [] v = {sqrt(2), 0,0};
+  float [] w = {-sqrt(2)/2, sqrt(2)/2, sqrt(2)/2};
+  int count=0;
+
+  for (int i=0; i<2; i++) {
+    for (int j=0; j<2; j++) {
+      for (int k=0; k<2; k++) {
+        pushMatrix();
+        translate(i*u[0]*sc,i*u[1]*sc,i*u[2]*sc);
+        translate(j*v[0]*sc, j*v[1]*sc, j*v[2]*sc);
+        translate(k*w[0]*sc, k*w[1]*sc, k*w[2]*sc);
+
+        to.draw();
+        popMatrix();
+        count++;
+      }
+    }
+  }
+  //to.draw();
 }
 
 
