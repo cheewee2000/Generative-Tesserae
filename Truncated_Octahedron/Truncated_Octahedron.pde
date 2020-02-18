@@ -1,6 +1,7 @@
 
 import peasy.PeasyCam;
 PeasyCam cam;
+int packing=10;
 
 tOcta to;
 float sc=2;
@@ -12,29 +13,32 @@ void setup() {
 
 void draw() {
   background(200);
-  //lights();
-  scale(20);
+  directionalLight(126, 126, 126, 0, 0, -1);
+
+  ambientLight(200,200,200);
+
+  scale(6);
 
   float [] u = {0, 0, sqrt(2)};
-  float [] v = {sqrt(2), 0,0};
+  float [] v = {sqrt(2), 0, 0};
   float [] w = {-sqrt(2)/2, sqrt(2)/2, sqrt(2)/2};
-  int count=0;
 
-  for (int i=0; i<2; i++) {
-    for (int j=0; j<2; j++) {
-      for (int k=0; k<2; k++) {
+  //draw packing
+  for (int i=0; i<packing; i++) {
+    for (int j=0; j<packing; j++) {
+      for (int k=0; k<packing*2; k++) {
         pushMatrix();
-        translate(i*u[0]*sc,i*u[1]*sc,i*u[2]*sc);
-        translate(j*v[0]*sc, j*v[1]*sc, j*v[2]*sc);
-        translate(k*w[0]*sc, k*w[1]*sc, k*w[2]*sc);
+        //println((1+k%2*-2));
+        float alt=(1+k%2*-1);
+        //https://mathematica.stackexchange.com/questions/214742/draw-a-truncated-octahedron-packing-in-3d
+        translate (-packing*sc/2,-packing*sc/2,-packing*sc/2);
+        translate(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt);
 
         to.draw();
         popMatrix();
-        count++;
       }
     }
   }
-  //to.draw();
 }
 
 
@@ -95,14 +99,15 @@ class tOcta {
 
 
   void draw() {
+
+    strokeWeight(.1);
     for (int i=0; i<faces.length; i++) {
-      s = createShape();
-      s.beginShape();
+      beginShape();
       for (int j=0; j<faces[i].length; j++) {
-        s.vertex((float)points[faces[i][j]].x, (float)points[faces[i][j]].y, (float)points[faces[i][j]].z);
+        vertex((float)points[faces[i][j]].x, (float)points[faces[i][j]].y, (float)points[faces[i][j]].z);
       }
-      s.endShape();
-      shape(s, 0, 0);
+
+      endShape(CLOSE);
     }
   }
 }
