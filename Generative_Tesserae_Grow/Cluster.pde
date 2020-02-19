@@ -28,12 +28,12 @@ class Cluster {
     //cluster bounding box
     pushMatrix();
     translate(pos.x, pos.y);
-    translate((nCells-1)*cellR/2, (nCells-1)*cellR/2, (nCells-1)*cellR/2);
+    translate((nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2));
     noFill();
     colorMode(RGB, 255);
     stroke(255);
     strokeWeight(1);
-    box(nCells*cellR);
+    box(nCells*cellR/sqrt(2));
     textSize(16);
     fill(255);
     //println(fitness);
@@ -52,7 +52,7 @@ class Cluster {
     //else fitness=1;
     //fitness=01;
     //fitness+=random(100);
-    
+
     fitness=dna.getSurfaceVolumeRatio();
   }
 
@@ -96,16 +96,21 @@ class Cluster {
 
 
 
+
+
+
 class Cell {
   float x, y, z;
   boolean isVisible=false;
   int neighbors=0;
   boolean hasBeenVisible=false;
-  
+  tOcta to;
+
   Cell(float _x, float _y, float _z) {
     x=_x;
     y=_y;
     z=_z;
+    to=new tOcta();
   }
 
   Cell clone() {
@@ -119,11 +124,15 @@ class Cell {
     if (isVisible) {
       hasBeenVisible=true;
       colorMode(HSB, 100);
-      noStroke();
-      fill(70+(6.0-neighbors)/6.0*30.0, 255, 100);
+      //noStroke();
+      strokeWeight(.1);
+      //fill(20+(neighbors)*30.0, 255, 100);
+      fill(80, 20+(neighbors)*5.0, 100);
+
       pushMatrix();
       translate(x, y, z);
-      box( cellR);
+      //box( cellR);
+      to.draw();
       popMatrix();
     }
   }

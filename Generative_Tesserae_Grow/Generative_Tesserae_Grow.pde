@@ -22,13 +22,13 @@ PeasyCam cam;
 
 Population population;  // Population
 float mutationRate = 0.00005;
-int margin=25;
+int margin=75;
 
-int xCount=6; //clusters per row in population
+int xCount=3; //clusters per row in population
 int populationSize=xCount*xCount;//make square rootable
 
-float cellR=8; //cell radius
-int nCells=12; //nunmber of cells in cluster row and column
+float cellR=30; //cell radius
+int nCells=8; //nunmber of cells in cluster row and column
 boolean runOptimize=false;
 
 void setup() {
@@ -43,8 +43,10 @@ void draw() {
   colorMode(RGB, 255);
 
   background(200);
-  lights();
+  //lights();
   //population.testFitness();
+  directionalLight(126, 126, 126, 1.5, 1, -1);
+  ambientLight(150,150, 150);
 
   if (runOptimize) {
 
@@ -87,5 +89,6 @@ void keyPressed() {
 
   if (key == 'r' ) {
     setup();
+    runOptimize=false;
   }
 }

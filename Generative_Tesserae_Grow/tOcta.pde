@@ -1,48 +1,3 @@
-
-import peasy.PeasyCam;
-PeasyCam cam;
-int packing=10;
-
-tOcta to;
-float sc=2;
-void setup() {
-  size(1000, 1000, P3D);
-  cam = new PeasyCam(this, 400);
-  to=new tOcta();
-}
-
-void draw() {
-  background(200);
-  directionalLight(126, 126, 126, 0, 0, -1);
-  ambientLight(200,200,200);
-
-  scale(6);
-
-  float [] u = {0, 0, sqrt(2)};
-  float [] v = {sqrt(2), 0, 0};
-  float [] w = {-sqrt(2)/2, sqrt(2)/2, sqrt(2)/2};
-
-  //draw packing
-  for (int i=0; i<packing; i++) {
-    for (int j=0; j<packing; j++) {
-      for (int k=0; k<packing*2; k++) {
-        pushMatrix();
-        //println((1+k%2*-2));
-        float alt=(1+k%2*-1);
-        //https://mathematica.stackexchange.com/questions/214742/draw-a-truncated-octahedron-packing-in-3d
-        translate (-packing*sc/2,-packing*sc/2,-packing*sc/2);
-        translate(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt);
-
-        to.draw();
-        popMatrix();
-      }
-    }
-  }
-}
-
-
-
-
 class tOcta {
   PShape s;
   PVector points []=new PVector[24];
@@ -99,7 +54,9 @@ class tOcta {
 
   void draw() {
 
-    strokeWeight(.1);
+    strokeWeight(.2);
+    pushMatrix();
+    scale(cellR/4);
     for (int i=0; i<faces.length; i++) {
       beginShape();
       for (int j=0; j<faces[i].length; j++) {
@@ -108,5 +65,6 @@ class tOcta {
 
       endShape(CLOSE);
     }
+    popMatrix();
   }
 }

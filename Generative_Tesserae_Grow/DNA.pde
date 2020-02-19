@@ -1,4 +1,9 @@
 
+float [] u = {0, 0, sqrt(2)};
+float [] v = {sqrt(2), 0, 0};
+float [] w = {-sqrt(2)/2, sqrt(2)/2, sqrt(2)/2};
+
+
 class DNA {
   // The genetic sequence
   Cell[] cells;
@@ -7,18 +12,27 @@ class DNA {
   // Constructor (makes a DNA of random PVectors)
   DNA() {
     int count=0;
-    cells = new Cell[nCells*nCells*nCells];
+    int center=0;
+    cells = new Cell[nCells*nCells*nCells*2];
     //setup array of cells
     for (int i=0; i<nCells; i++ ) {
       for (int j=0; j<nCells; j++ ) {
-        for (int k=0; k<nCells; k++ ) {
-          cells[count] = new Cell( i*cellR, j*cellR, k*cellR) ;
+        for (int k=0; k<nCells*2; k++ ) {
+
+          float alt=(1+k%2*-1);
+          float sc=cellR/2;
+
+          cells[count] = new Cell(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt);
+
+          if (i==int(nCells/2) && j==int(nCells/2) && k==nCells)center=count;
+
           count++;
         }
       }
     }
+
     //turn one cell on
-    cells[int(nCells/2+nCells*nCells/2+nCells*nCells*nCells/2)].isVisible=true;
+    cells[center].isVisible=true;
   }
 
   // Constructor #2, creates the instance based on an existing array
@@ -69,7 +83,7 @@ class DNA {
       if (cells[i].isVisible) {
         int count=0;
         for (int j = 0; j < cells.length; j++)             
-          if (i!=j && dist(cells[i].x, cells[i].y, cells[i].z, cells[j].x, cells[j].y, cells[j].z)<=cellR)
+          if (i!=j && dist(cells[i].x, cells[i].y, cells[i].z, cells[j].x, cells[j].y, cells[j].z)<=cellR/sqrt(2))
           {
             neighbors[count]=j;
             count++;
@@ -90,7 +104,7 @@ class DNA {
       //add up neighbor score
       neighborTotal+=cells[i].neighbors;
     }
-    println(neighborTotal);
+    //println(neighborTotal);
 
     return cells.length/neighborTotal;
   }
@@ -102,14 +116,20 @@ class DNA {
     //boolean visible=false;
     cells[c].neighbors=0;
 
-    if (c+1<cells.length) if ( cells[c+1].isVisible) cells[c].neighbors++;
-    if (c-1>=0) if ( cells[c-1].isVisible ) cells[c].neighbors++;
+    //if (c+1<cells.length) if ( cells[c+1].isVisible) cells[c].neighbors++;
+    //if (c-1>=0) if ( cells[c-1].isVisible ) cells[c].neighbors++;
 
-    if (c+nCells<cells.length) if ( cells[c+nCells].isVisible  ) cells[c].neighbors++;
-    if (c-nCells>=0) if ( cells[c-nCells].isVisible  ) cells[c].neighbors++;
+    //if (c+nCells<cells.length) if ( cells[c+nCells].isVisible  ) cells[c].neighbors++;
+    //if (c-nCells>=0) if ( cells[c-nCells].isVisible  ) cells[c].neighbors++;
 
-    if (c+nCells*nCells<cells.length)if ( cells[c+nCells*nCells].isVisible  ) cells[c].neighbors++;
-    if (c-nCells*nCells>=0)if ( cells[c-nCells*nCells].isVisible  ) cells[c].neighbors++;
+    //if (c+nCells*nCells<cells.length)if ( cells[c+nCells*nCells].isVisible  ) cells[c].neighbors++;
+    //if (c-nCells*nCells>=0)if ( cells[c-nCells*nCells].isVisible  ) cells[c].neighbors++;
+
+    for (int i=0; i<cells.length; i++) {
+      if ( c!=i && cells[i].isVisible && dist(cells[i].x, cells[i].y, cells[i].z, cells[c].x, cells[c].y, cells[c].z)<=cellR/sqrt(2)) {
+        cells[c].neighbors++;
+      }
+    }
 
     return cells[c].neighbors;
 
