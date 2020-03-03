@@ -6,7 +6,7 @@ class Cluster {
   PVector pos;
   boolean selected=false;
   boolean hover=false;
-
+  color c=color(255, 255, 255);
   //constructor
   Cluster( PVector pos_, DNA dna_) {
     dna = dna_;
@@ -15,33 +15,34 @@ class Cluster {
   }
 
   void draw() {
-
     for (int i = 0; i < dna.cells.length; i++) {
       pushMatrix();
       translate(pos.x, pos.y);
-      dna.countNeighbors(i);
       dna.cells[i].draw();
       popMatrix();
+      dna.countNeighbors(i);
     }
-
-
-    //cluster bounding box
-    pushMatrix();
-    translate(pos.x, pos.y);
-    translate((nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2));
-    noFill();
-    colorMode(RGB, 255);
-    stroke(255);
-    strokeWeight(1);
-    box(nCells*cellR/sqrt(2));
-    textSize(16);
-    fill(255);
-    //println(fitness);
-
-    text(nf(fitness, 1, 1), nCells*cellR/2+10, nCells*cellR/2);
-    popMatrix();
   }
 
+  void drawBoundingBox() {
+    //cluster bounding box
+    noFill();
+    //fill(c,1);
+    stroke(c);
+    strokeWeight(.5);
+    colorMode(RGB, 255);
+
+    pushMatrix();
+    translate(pos.x, pos.y, pos.z);
+    translate((nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2));
+
+    box(nCells*cellR/sqrt(2));
+
+    //textSize(16);
+    //fill(255);
+    //text(nf(fitness, 1, 1), nCells*cellR/2+10, nCells*cellR/2);
+    popMatrix();
+  }
 
   void testFitness() {
     //int neighbors=0;
@@ -57,7 +58,15 @@ class Cluster {
   }
 
 
+  void setColor(color _c) {
+    c=_c;
+    for (int i = 0; i < dna.cells.length; i++) {
+      dna.cells[i].c=_c;
+    }
+    draw();
 
+    drawBoundingBox() ;
+  }
 
 
 
@@ -105,12 +114,14 @@ class Cell {
   int neighbors=0;
   boolean hasBeenVisible=false;
   tOcta to;
+  color c;
 
   Cell(float _x, float _y, float _z) {
     x=_x;
     y=_y;
     z=_z;
     to=new tOcta();
+    c=color(255);
   }
 
   Cell clone() {
@@ -124,8 +135,9 @@ class Cell {
     if (isVisible) {
       hasBeenVisible=true;
       colorMode(HSB, 100);
-      //noStroke();
-      strokeWeight(.1);
+      noStroke();
+      //strokeWeight(.01);
+      //stroke(c);
       //fill(20+(neighbors)*30.0, 255, 100);
       fill(80, 20+(neighbors)*5.0, 100);
 

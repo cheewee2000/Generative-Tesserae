@@ -18,17 +18,29 @@ class Population {
 
     for (int i = 0; i < clusters.length; i++) {
       int y=(i/xCount);
-      PVector pos=new PVector(i%xCount*(width/xCount)-width/2+margin, y*height/xCount - height/2+margin);
+      PVector pos=new PVector(i%xCount*(width/xCount)-width/2+margin, y*height/xCount - height/2+margin, 0 );
+
+      //PVector pos=new PVector(i*50-width/2, 100, 0 );
+
+
       clusters[i] = new Cluster(pos, new DNA());
     }
   }
 
   void live () {
     // Run every Cluster
+
     for (int i = 0; i < clusters.length; i++) {
-      //clusters[i].cullIslands();
-      //clusters[i].testFitness();
+      clusters[i].drawBoundingBox();
+
+
+      picker.start(i);
       clusters[i].draw();
+    }
+    picker.stop();
+
+
+    for (int i = 0; i < clusters.length; i++) {
     }
   }
 

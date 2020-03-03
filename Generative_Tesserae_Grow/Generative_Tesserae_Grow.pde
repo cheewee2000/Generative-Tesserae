@@ -1,6 +1,9 @@
 import peasy.*;
 PeasyCam cam;
 
+import picking.*;
+Picker picker;
+
 //generate space packing
 //each fish in population is a space packing with 2D arraylist of remaining cells
 //cells are truncated octahedrons ( numbered i,j)
@@ -12,11 +15,22 @@ PeasyCam cam;
 //breed
 
 //truncated octa
+//constrain to 10, 20 cells
+//save to STL, UI
+//ray trace exposed surface area
+
+//sliders for fitness criteria
+
 //branch length fitness
+
 //filled out ports, all hex ports
 
-//3D arrat arranged in fitness level
+//tunnels
+
+
+//3D array arranged in fitness level
 //user selection of winners
+
 
 
 
@@ -33,6 +47,9 @@ boolean runOptimize=false;
 
 void setup() {
   size(900, 900, P3D);
+
+  picker = new Picker(this);
+
   cam = new PeasyCam(this, 900);
   cam.setWheelScale(.1); // 1.0 by default
 
@@ -40,13 +57,19 @@ void setup() {
 }
 
 void draw() {
+  cam.getState().apply(picker.getBuffer());
+
   colorMode(RGB, 255);
 
   background(200);
-  //lights();
+  lights();
   //population.testFitness();
-  directionalLight(126, 126, 126, 1.5, 1, -1);
-  ambientLight(150,150, 150);
+  
+  //lighting messes up picker
+  //directionalLight(126, 126, 126, 1.5, 1, -1);
+  //ambientLight(150, 150, 150);
+
+
 
   if (runOptimize) {
 
@@ -58,11 +81,6 @@ void draw() {
   population.testFitness();
 
   population.live();
-
-
-  //population.testFitness();
-  //population.selection();
-  //population.reproduction();
 }
 
 void keyPressed() {
@@ -90,5 +108,29 @@ void keyPressed() {
   if (key == 'r' ) {
     setup();
     runOptimize=false;
+  }
+}
+
+
+void mouseReleased() {
+  int id = picker.get(mouseX, mouseY);
+  if (id >= 0 && id<population.clusters.length) {
+    println(id);
+    cam.lookAt(population.clusters[id].pos.x+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.y+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.z, 300, 500);
+  }
+}
+
+
+void mouseMoved() {
+
+  int id = picker.get(mouseX, mouseY);
+  for (int i=0; i<population.clusters.length; i++) {
+    if (id ==i) {
+      //println(id);
+      population.clusters[id].setColor(color(255, 0, 0));
+    } else {
+      population.clusters[i].setColor(color(255));
+      //println("setcolor white");
+    }
   }
 }
