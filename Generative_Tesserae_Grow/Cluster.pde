@@ -7,6 +7,7 @@ class Cluster {
   boolean selected=false;
   boolean hover=false;
   color c=color(255, 255, 255);
+  int nVisible=0;
   //constructor
   Cluster( PVector pos_, DNA dna_) {
     dna = dna_;
@@ -15,10 +16,14 @@ class Cluster {
   }
 
   void draw() {
+    nVisible=0;
     for (int i = 0; i < dna.cells.length; i++) {
       pushMatrix();
       translate(pos.x, pos.y);
-      dna.cells[i].draw();
+      if (dna.cells[i].isVisible) {
+        dna.cells[i].draw();
+        nVisible++;
+      }
       popMatrix();
       dna.countNeighbors(i);
     }
