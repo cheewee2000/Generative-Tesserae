@@ -43,6 +43,8 @@ class Cluster {
 
     box(nCells*cellR/sqrt(2));
 
+
+    //text messes up lighting
     //textSize(16);
     //fill(255);
     //text(nf(fitness, 1, 1), nCells*cellR/2+10, nCells*cellR/2);
@@ -59,7 +61,8 @@ class Cluster {
     //fitness=01;
     //fitness+=random(100);
 
-    fitness=dna.getSurfaceVolumeRatio();
+    fitness=dna.getSurfaceVolumeRatio()*s1f;
+    fitness+=dna.getBranchScore()*s2f;
   }
 
 

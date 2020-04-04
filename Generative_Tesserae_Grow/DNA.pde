@@ -109,6 +109,22 @@ class DNA {
     return cells.length/neighborTotal;
   }
 
+  float getBranchScore() {
+    float branchScore=1;
+    for (int i = 0; i < cells.length; i++) {
+      //if cell has 2-3  neighbors.
+      
+      if(cells[i].neighbors>2){
+        branchScore+=10000/cells[i].neighbors;
+      }
+            if(cells[i].neighbors==2){
+        branchScore+=100000;
+      }
+    }
+    //println(neighborTotal);
+
+    return branchScore;
+  }
 
 
 
