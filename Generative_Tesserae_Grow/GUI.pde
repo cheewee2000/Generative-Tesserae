@@ -101,7 +101,7 @@ class ChildApplet extends PApplet {
     for (int i=0; i<population.clusters.length; i++) {
       cellCount+= population.clusters[i].nVisible;
     }
-    cellCount=cmellCount/population.clusters.length;
+    cellCount=cellCount/population.clusters.length;
     cellCount= population.clusters[0].nVisible;
 
 
