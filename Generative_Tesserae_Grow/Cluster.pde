@@ -60,7 +60,6 @@ class Cluster {
 
     nVisible=0;
     for (int i = 0; i < dna.cells.length; i++) {
-
       if (dna.cells[i].isVisible) {
         nVisible++;
       }

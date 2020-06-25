@@ -29,7 +29,7 @@ class Population {
 
     //initial cluster of 20
     for (int j=0; j<20; j++) {
-      //grow();
+      grow();
     }
   }
 
@@ -72,7 +72,7 @@ class Population {
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
     for (int i = 0; i < clusters.length; i++) {
       float fitnessNormal = map(clusters[i].getFitness(), 0, maxFitness, 0, 1);
-      int n = (int) (fitnessNormal * 10);  // Arbitrary multiplier
+      int n = (int) (fitnessNormal * 100);  // Arbitrary multiplier
       for (int j = 0; j < n; j++) {
         matingPool.add(clusters[i]);
       }
