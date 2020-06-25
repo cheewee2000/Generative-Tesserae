@@ -124,7 +124,7 @@ class DNA {
     }
     //println(neighborTotal);
 
-    return cells.length/neighborTotal;
+    return neighborTotal/cells.length*10000;
   }
 
   float getBranchScore() {
