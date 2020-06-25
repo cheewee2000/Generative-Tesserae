@@ -1,5 +1,6 @@
 class ChildApplet extends PApplet {
   //JFrame frame;
+  float c1 = clusterSize;
   float s1 = .5;
   float s2 = .5;
   float m1 = .5;
@@ -22,6 +23,16 @@ class ChildApplet extends PApplet {
 
 
     cp5 = new ControlP5(this);
+
+    cp5.addSlider("c1")
+      .setPosition(25, row)
+      .setRange(0, 100)
+      .setValue(c1)
+      .setSize(200, 20)
+      .setCaptionLabel("cluser size")
+      ;
+    row+=25;
+
 
     cp5.addSlider("m1")
       .setPosition(25, row)
@@ -95,6 +106,7 @@ class ChildApplet extends PApplet {
     mutationRate = 0.00015+m1*.2;
     s1f = s1;
     s2f = s2;
+    clusterSize=int(c1);
 
 
     float cellCount= 0;

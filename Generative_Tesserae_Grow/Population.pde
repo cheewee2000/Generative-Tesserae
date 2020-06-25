@@ -28,7 +28,7 @@ class Population {
 
 
     //initial cluster of 20
-    for (int j=0; j<20; j++) {
+    for (int j=0; j<clusterSize; j++) {
       grow();
     }
   }
