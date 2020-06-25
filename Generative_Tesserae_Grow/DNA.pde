@@ -77,21 +77,39 @@ class DNA {
       tempCells[i]=cells[i].clone();
     }
 
+    //visible cells
+    Cell[] visibleCells = new Cell[cells.length];
+    int count=0;
     for (int i = 0; i < cells.length; i++) {
-      //grow
-      int neighbors [] =new int[90];
       if (cells[i].isVisible) {
-        int count=0;
-        for (int j = 0; j < cells.length; j++)             
-          if (i!=j && dist(cells[i].x, cells[i].y, cells[i].z, cells[j].x, cells[j].y, cells[j].z)<=cellR/sqrt(2))
-          {
-            neighbors[count]=j;
-            count++;
-          }
-        //pick random neighbor
-        tempCells[neighbors[int(random(count))]].isVisible=true;
+        visibleCells[count]=cells[i].clone();
+        count++;
       }
     }
+
+
+
+    //for (int i = 0; i < visibleCells.length; i++) {
+    int i=int(random(0, count));
+
+    //grow
+    int neighbors [] =new int[90];
+    //if (visibleCells[i].isVisible) {
+    count=0;
+    for (int j = 0; j < cells.length; j++)    
+    {
+      float cellDist=dist(visibleCells[i].x, visibleCells[i].y, visibleCells[i].z, cells[j].x, cells[j].y, cells[j].z);
+
+      if (cellDist<=cellR/sqrt(2) && cellDist>cellR/4)
+      {
+        neighbors[count]=j;
+        count++;
+      }
+    }
+    //pick random neighbor
+    tempCells[neighbors[int(random(count))]].isVisible=true;
+    //}
+    //}
 
     cells=tempCells;
   }
@@ -113,11 +131,11 @@ class DNA {
     float branchScore=1;
     for (int i = 0; i < cells.length; i++) {
       //if cell has 2-3  neighbors.
-      
-      if(cells[i].neighbors>2){
+
+      if (cells[i].neighbors>2) {
         branchScore+=10000/cells[i].neighbors;
       }
-            if(cells[i].neighbors==2){
+      if (cells[i].neighbors==2) {
         branchScore+=100000;
       }
     }

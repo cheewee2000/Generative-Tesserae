@@ -61,7 +61,8 @@ float mutationRate = 0.00015;
 int margin=75;
 
 int xCount=3; //clusters per row in population
-int populationSize=xCount*xCount;//make square rootable
+//int populationSize=xCount*xCount;//make square rootable
+int populationSize=100;//make square rootable
 
 float cellR=30; //cell radius
 int nCells=8; //nunmber of cells in cluster row and column
@@ -71,7 +72,7 @@ import nervoussystem.obj.*;
 boolean saveOBJ=false;
 int currentCluster=-1;
 
-float s1f,s2f;
+float s1f, s2f;
 
 void settings() {
   size(900, 900, P3D);
@@ -115,9 +116,9 @@ void draw() {
     population.selection();
     population.reproduction();
     population.cullIslands();
+    population.testFitness();
   }
 
-  population.testFitness();
 
   //if (!saveOBJ) {
   //  population.live();
@@ -135,9 +136,6 @@ void draw() {
   } else {
     population.live();
   }
-  
-
-
 }
 
 void keyPressed() {

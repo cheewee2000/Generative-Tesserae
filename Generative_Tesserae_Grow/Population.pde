@@ -25,23 +25,25 @@ class Population {
 
       clusters[i] = new Cluster(pos, new DNA());
     }
+
+
+    //initial cluster of 20
+    for (int j=0; j<20; j++) {
+      //grow();
+    }
   }
 
   void live () {
     // Run every Cluster
 
-    for (int i = 0; i < clusters.length; i++) {
+    //for (int i = 0; i < clusters.length; i++) {
+    //display 9 culsters
+    for (int i = 0; i < 9; i++) {
       clusters[i].drawBoundingBox();
-
-
       picker.start(i);
       clusters[i].draw();
     }
     picker.stop();
-
-
-    for (int i = 0; i < clusters.length; i++) {
-    }
   }
 
   void cullIslands() {

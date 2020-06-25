@@ -16,16 +16,13 @@ class Cluster {
   }
 
   void draw() {
-    nVisible=0;
     for (int i = 0; i < dna.cells.length; i++) {
       pushMatrix();
       translate(pos.x, pos.y);
       if (dna.cells[i].isVisible) {
         dna.cells[i].draw();
-        nVisible++;
       }
       popMatrix();
-      dna.countNeighbors(i);
     }
   }
 
@@ -60,6 +57,15 @@ class Cluster {
     //else fitness=1;
     //fitness=01;
     //fitness+=random(100);
+
+    nVisible=0;
+    for (int i = 0; i < dna.cells.length; i++) {
+
+      if (dna.cells[i].isVisible) {
+        nVisible++;
+      }
+      dna.countNeighbors(i);
+    }
 
     fitness=dna.getSurfaceVolumeRatio()*s1f;
     fitness+=dna.getBranchScore()*s2f;
