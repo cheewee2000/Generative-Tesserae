@@ -125,6 +125,13 @@ class Population {
     }
   }
 
+  void findIslands() {
+    for (int i = 0; i < clusters.length; i++) {
+      clusters[i].findIslands();
+    }
+  }
+  
+  
 
   // Find highest fintess for the population
   float getMinFitness() {

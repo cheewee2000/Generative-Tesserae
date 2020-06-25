@@ -82,6 +82,41 @@ class Cluster {
   }
 
 
+  void findIslands() {
+    //visible cells
+    Cell[] visibleCells = new Cell[1];
+    int count=0;
+    for (int i = 0; i < dna.cells.length; i++) {
+      if (dna.cells[i].isVisible) {
+        visibleCells=(Cell[]) expand(visibleCells, count+1);
+
+        visibleCells[count]=dna.cells[i].clone();
+        count++;
+      }
+    }
+
+
+    int neighborhood=0;
+    for (int i = 0; i <dna.cells.length; i++) {
+      if (dna.cells[i].neighborhood==-1 && dna.cells[i].isVisible) {
+        dna.cells[i].neighborhood=neighborhood;
+        
+        dna.spreadNeighborhood(i, nVisible);
+        neighborhood++;
+      }
+    }
+
+//count neighborhood size
+
+//delete all but biggest island
+
+  }
+
+
+
+  //loop through and count neighborhoods
+  //count island size
+  //delete smaller island
 
 
   void cullIslands() {
@@ -91,7 +126,6 @@ class Cluster {
     }
 
     for (int i = 0; i < dna.cells.length; i++) {
-
       if (dna.cells[i].isVisible) {
         //check if there's a neighbor
         if ( dna.countNeighbors(i)==0) {
@@ -113,52 +147,5 @@ class Cluster {
 
   DNA getDNA() {
     return dna;
-  }
-}
-
-
-
-
-
-
-class Cell {
-  float x, y, z;
-  boolean isVisible=false;
-  int neighbors=0;
-  boolean hasBeenVisible=false;
-  tOcta to;
-  color c;
-
-  Cell(float _x, float _y, float _z) {
-    x=_x;
-    y=_y;
-    z=_z;
-    to=new tOcta();
-    c=color(255);
-  }
-
-  Cell clone() {
-    Cell cell=new Cell(this.x, this.y, this.z);
-    cell.isVisible=this.isVisible;
-    return cell;
-  }
-
-
-  void draw() {
-    if (isVisible) {
-      hasBeenVisible=true;
-      colorMode(HSB, 100);
-      noStroke();
-      //strokeWeight(.01);
-      //stroke(c);
-      //fill(20+(neighbors)*30.0, 255, 100);
-      fill(80, 20+(neighbors)*5.0, 100);
-
-      pushMatrix();
-      translate(x, y, z);
-      //box( cellR);
-      to.draw();
-      popMatrix();
-    }
   }
 }

@@ -78,14 +78,19 @@ class DNA {
     }
 
     //visible cells
-    Cell[] visibleCells = new Cell[cells.length];
+    Cell[] visibleCells = new Cell[1];
     int count=0;
     for (int i = 0; i < cells.length; i++) {
       if (cells[i].isVisible) {
+        visibleCells=(Cell[]) expand(visibleCells, count+1);
+
         visibleCells[count]=cells[i].clone();
         count++;
       }
     }
+    //println(cells.length);
+
+    //println(visibleCells.length);
 
 
 
@@ -158,7 +163,6 @@ class DNA {
 
     //if (c+nCells*nCells<cells.length)if ( cells[c+nCells*nCells].isVisible  ) cells[c].neighbors++;
     //if (c-nCells*nCells>=0)if ( cells[c-nCells*nCells].isVisible  ) cells[c].neighbors++;
-
     for (int i=0; i<cells.length; i++) {
       if ( c!=i && cells[i].isVisible && dist(cells[i].x, cells[i].y, cells[i].z, cells[c].x, cells[c].y, cells[c].z)<=cellR/sqrt(2)) {
         cells[c].neighbors++;
@@ -168,5 +172,21 @@ class DNA {
     return cells[c].neighbors;
 
     //println(dna.cells[c].exposedFaces);
+  }
+
+  void spreadNeighborhood(int c, int level) {
+    //println(visibleCells.length);
+    if (level>0) {
+      for (int i=0; i<cells.length; i++) {
+        // println(i);
+        if ( c!=i && cells[i].isVisible && cells[i].neighborhood==-1) {
+          if (dist(cells[i].x, cells[i].y, cells[i].z, cells[c].x, cells[c].y, cells[c].z)<=cellR/sqrt(2)) {
+            cells[i].neighborhood=cells[c].neighborhood;
+            level--;
+            spreadNeighborhood(i, level);
+          }
+        }
+      }
+    }
   }
 }

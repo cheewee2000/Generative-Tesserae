@@ -20,7 +20,6 @@ ControlP5 cp5;
 //ray trace exposed surface area
 
 //sliders for fitness criteria
-//branch length fitness
 //look for growth that shares less neighboring faces
 
 //print out current mutation value
@@ -155,6 +154,8 @@ void keyPressed() {
     runOptimize=false;
   } else if (key == 's' ) {
     saveOBJ=true;
+  } else if (key == 'i' ) {
+    population.findIslands();
   }
 }
 
