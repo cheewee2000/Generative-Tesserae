@@ -11,12 +11,34 @@ import controlP5.*;
 
 ControlP5 cp5;
 
+//track cell neighbors. for counting and for constraining growth
+//allow 1-14 ports for connection
+
+
 //constrain to 10, 20 cells
 //UI
 //ray trace exposed surface area
 
 //sliders for fitness criteria
 //branch length fitness
+//look for growth that shares less neighboring faces
+
+//print out current mutation value
+//print UI mutation range
+
+//should crossover be more random?
+
+//survey islands and delete all but main island
+//build bridge between islands
+
+//increase population size. hide in background. display sub matrix
+
+//mouse hover to show fitness in UI
+
+//3d intuive exlporation UI
+
+
+
 //filled out ports, all hex ports
 
 //tunnels
@@ -33,6 +55,7 @@ Population population;  // Population
 
 
 float mutationRate = 0.00015;
+
 //float mutationRate = 0.00000005;
 
 int margin=75;
