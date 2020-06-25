@@ -73,6 +73,9 @@ int currentCluster=-1;
 
 float s1f, s2f;
 
+int clusterSize=20;
+
+
 void settings() {
   size(900, 900, P3D);
 }
@@ -112,10 +115,14 @@ void draw() {
   //ambientLight(150, 150, 150);
 
   if (runOptimize) {
+
     population.selection();
     population.reproduction();
     population.cullIslands();
+
     population.testFitness();
+
+    //population.testFitness();
   }
 
 
@@ -140,6 +147,7 @@ void draw() {
 void keyPressed() {
 
   if (keyCode == ENTER ) {
+
     runOptimize=!runOptimize;
   } else if (key == 'm' ) { //force drastic mutation
     population.mutate(.2);
@@ -154,9 +162,10 @@ void keyPressed() {
     runOptimize=false;
   } else if (key == 's' ) {
     saveOBJ=true;
-  } else if (key == 'i' ) {
-    population.findIslands();
   }
+  //else if (key == 'i' ) {
+  //  population.cullIslands();
+  //}
 }
 
 

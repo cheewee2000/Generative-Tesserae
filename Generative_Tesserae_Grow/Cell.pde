@@ -37,7 +37,7 @@ class Cell {
       fill(80, 20+(neighbors)*5.0, 100);
 
       if (neighborhood>-1) {
-        fill(255, neighborhood*20, 100);
+        fill(255, neighborhood*5, 100);
       }
 
       pushMatrix();

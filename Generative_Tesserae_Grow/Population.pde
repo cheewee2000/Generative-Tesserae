@@ -46,11 +46,6 @@ class Population {
     picker.stop();
   }
 
-  void cullIslands() {
-    for (int i = 0; i < clusters.length; i++) {
-      clusters[i].cullIslands();
-    }
-  }
 
   void testFitness() {
     for (int i = 0; i < clusters.length; i++) {
@@ -125,9 +120,9 @@ class Population {
     }
   }
 
-  void findIslands() {
+  void cullIslands() {
     for (int i = 0; i < clusters.length; i++) {
-      clusters[i].findIslands();
+      clusters[i].cullIslands();
     }
   }
   

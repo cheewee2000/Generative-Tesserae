@@ -58,13 +58,7 @@ class Cluster {
     //fitness=01;
     //fitness+=random(100);
 
-    nVisible=0;
-    for (int i = 0; i < dna.cells.length; i++) {
-      if (dna.cells[i].isVisible) {
-        nVisible++;
-      }
-      dna.countNeighbors(i);
-    }
+
 
     fitness=dna.getSurfaceVolumeRatio()*s1f;
     fitness+=dna.getBranchScore()*s2f;
@@ -82,35 +76,71 @@ class Cluster {
   }
 
 
-  void findIslands() {
-    //visible cells
-    Cell[] visibleCells = new Cell[1];
-    int count=0;
+  void cullIslands() {
+    nVisible=0;
     for (int i = 0; i < dna.cells.length; i++) {
       if (dna.cells[i].isVisible) {
-        visibleCells=(Cell[]) expand(visibleCells, count+1);
-
-        visibleCells[count]=dna.cells[i].clone();
-        count++;
+        dna.cells[i].neighborhood=-1;
+        nVisible++;
       }
+      dna.countNeighbors(i);
     }
 
-
+    //spread neighborhood number
     int neighborhood=0;
     for (int i = 0; i <dna.cells.length; i++) {
       if (dna.cells[i].neighborhood==-1 && dna.cells[i].isVisible) {
         dna.cells[i].neighborhood=neighborhood;
-        
+
         dna.spreadNeighborhood(i, nVisible);
         neighborhood++;
       }
     }
 
-//count neighborhood size
+    //count neighborhood size
+    int[] islands = new int[6];
 
-//delete all but biggest island
+    for (int i = 0; i <islands.length; i++) {
+      int cellCount=0;
+      for (int j = 0; j <dna.cells.length; j++) {
+        if (dna.cells[j].neighborhood==i) {
+          islands[i]=cellCount;
+          cellCount++;
+        }
+      }
+    }
 
+    //delete all but biggest island
+    int LargestIslandIndex=getIndexOfLargest(islands);
+    for (int i = 0; i <dna.cells.length; i++) {
+      if (dna.cells[i].neighborhood!=LargestIslandIndex && dna.cells[i].isVisible) {
+        dna.cells[i].isVisible=false;
+      }
+    }
+
+    adjustClusterSize(clusterSize);
   }
+
+
+  void adjustClusterSize(int size) {
+    if (nVisible<size) {
+      dna.grow();
+      //adjustClusterSize(size);
+    }
+  }
+
+  int getIndexOfLargest( int[] array )
+  {
+    if ( array == null || array.length == 0 ) return -1; // null or empty
+
+    int largest = 0;
+    for ( int i = 1; i < array.length; i++ )
+    {
+      if ( array[i] > array[largest] ) largest = i;
+    }
+    return largest; // position of the first largest found
+  }
+
 
 
 
@@ -119,25 +149,25 @@ class Cluster {
   //delete smaller island
 
 
-  void cullIslands() {
-    Cell[] tempCells = new Cell[dna.cells.length];
-    for (int i = 0; i < dna.cells.length; i++) {
-      tempCells[i]=dna.cells[i].clone();
-    }
+  //  void cullIslands() {
+  //    Cell[] tempCells = new Cell[dna.cells.length];
+  //    for (int i = 0; i < dna.cells.length; i++) {
+  //      tempCells[i]=dna.cells[i].clone();
+  //    }
 
-    for (int i = 0; i < dna.cells.length; i++) {
-      if (dna.cells[i].isVisible) {
-        //check if there's a neighbor
-        if ( dna.countNeighbors(i)==0) {
-          //tempDNA.cells[i].isVisible=false;
-          tempCells[i].isVisible=false;
-        } else {
-          //tempCells[i].isVisible=true;
-        }
-      }
-    }
-    dna.cells=tempCells;
-  }
+  //    for (int i = 0; i < dna.cells.length; i++) {
+  //      if (dna.cells[i].isVisible) {
+  //        //check if there's a neighbor
+  //        if ( dna.countNeighbors(i)==0) {
+  //          //tempDNA.cells[i].isVisible=false;
+  //          tempCells[i].isVisible=false;
+  //        } else {
+  //          //tempCells[i].isVisible=true;
+  //        }
+  //      }
+  //    }
+  //    dna.cells=tempCells;
+  //  }
 
 
 

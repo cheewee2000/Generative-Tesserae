@@ -13,6 +13,7 @@ class DNA {
   DNA() {
     int count=0;
     int center=0;
+
     cells = new Cell[nCells*nCells*nCells*2];
     //setup array of cells
     for (int i=0; i<nCells; i++ ) {
@@ -78,13 +79,16 @@ class DNA {
     }
 
     //visible cells
-    Cell[] visibleCells = new Cell[1];
+    ArrayList<Cell> visibleCells = new ArrayList<Cell>();
+
+    //Cell[] visibleCells = new Cell[];
     int count=0;
     for (int i = 0; i < cells.length; i++) {
       if (cells[i].isVisible) {
-        visibleCells=(Cell[]) expand(visibleCells, count+1);
+        visibleCells.add(cells[i].clone());
 
-        visibleCells[count]=cells[i].clone();
+        //visibleCells=(Cell[]) expand(visibleCells, count+1);
+        //visibleCells[count]=cells[i].clone();
         count++;
       }
     }
@@ -93,30 +97,35 @@ class DNA {
     //println(visibleCells.length);
 
 
+    if (count>0) {
+      //for (int i = 0; i < visibleCells.length; i++) {
+      int i=int(random(0, count));
+      //int i=0;
 
-    //for (int i = 0; i < visibleCells.length; i++) {
-    int i=int(random(0, count));
+      Cell visibleCell = visibleCells.get(i);
 
-    //grow
-    int neighbors [] =new int[90];
-    //if (visibleCells[i].isVisible) {
-    count=0;
-    for (int j = 0; j < cells.length; j++)    
-    {
-      float cellDist=dist(visibleCells[i].x, visibleCells[i].y, visibleCells[i].z, cells[j].x, cells[j].y, cells[j].z);
 
-      if (cellDist<=cellR/sqrt(2) && cellDist>cellR/4)
-      {
-        neighbors[count]=j;
-        count++;
+      //grow
+      int neighbors [] =new int[90];
+      if (visibleCell.isVisible) {
+        count=0;
+        for (int j = 0; j < cells.length; j++)    
+        {
+          float cellDist=dist(visibleCell.x, visibleCell.y, visibleCell.z, cells[j].x, cells[j].y, cells[j].z);
+
+          if (cellDist<=cellR/sqrt(2) && cellDist>cellR/4)
+          {
+            neighbors[count]=j;
+            count++;
+          }
+        }
+        //pick random neighbor
+        tempCells[neighbors[int(random(count))]].isVisible=true;
       }
-    }
-    //pick random neighbor
-    tempCells[neighbors[int(random(count))]].isVisible=true;
-    //}
-    //}
+      //}
 
-    cells=tempCells;
+      cells=tempCells;
+    }
   }
 
 
