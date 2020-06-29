@@ -61,7 +61,7 @@ int margin=75;
 
 int xCount=3; //clusters per row in population
 //int populationSize=xCount*xCount;//make square rootable
-int populationSize=100;//make square rootable
+int populationSize=300;//
 
 float cellR=30; //cell radius
 int nCells=8; //nunmber of cells in cluster row and column
@@ -74,7 +74,7 @@ int currentCluster=-1;
 float s1f, s2f;
 
 int clusterSize=20;
-
+boolean didCullIslands=false;
 
 void settings() {
   size(900, 900, P3D);
@@ -118,11 +118,15 @@ void draw() {
 
     population.selection();
     population.reproduction();
-    population.cullIslands();
+    //population.cullIslands();
 
     population.testFitness();
-
     //population.testFitness();
+  } else if (didCullIslands==false) {
+    population.cullIslands();
+    population.testFitness();
+
+    didCullIslands=true;
   }
 
 
@@ -149,6 +153,7 @@ void keyPressed() {
   if (keyCode == ENTER ) {
 
     runOptimize=!runOptimize;
+    didCullIslands=false;
   } else if (key == 'm' ) { //force drastic mutation
     population.mutate(.2);
   } else if (key == 'g' ) {

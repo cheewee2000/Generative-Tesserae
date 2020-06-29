@@ -3,7 +3,7 @@ class ChildApplet extends PApplet {
   float c1 = clusterSize;
   float s1 = .5;
   float s2 = .5;
-  float m1 = .5;
+  float m1 = .0;
 
   boolean _generate = false;
 

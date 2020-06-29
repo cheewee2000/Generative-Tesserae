@@ -8,6 +8,8 @@ class Cluster {
   boolean hover=false;
   color c=color(255, 255, 255);
   int nVisible=0;
+  boolean hasIslands=false;
+
   //constructor
   Cluster( PVector pos_, DNA dna_) {
     dna = dna_;
@@ -62,6 +64,7 @@ class Cluster {
 
     fitness=dna.getSurfaceVolumeRatio()*s1f;
     fitness+=dna.getBranchScore()*s2f;
+    //if (hasIslands) fitness-=100000;
   }
 
 
@@ -75,8 +78,7 @@ class Cluster {
     drawBoundingBox() ;
   }
 
-
-  void cullIslands() {
+  void countVisible() {
     nVisible=0;
     for (int i = 0; i < dna.cells.length; i++) {
       if (dna.cells[i].isVisible) {
@@ -85,7 +87,12 @@ class Cluster {
       }
       dna.countNeighbors(i);
     }
+  }
 
+
+  void cullIslands() {
+
+    countVisible();
     //spread neighborhood number
     int neighborhood=0;
     for (int i = 0; i <dna.cells.length; i++) {
@@ -110,10 +117,16 @@ class Cluster {
       }
     }
 
+    int largestIslandIndex=getIndexOfLargest(islands);
+
+
+    if (largestIslandIndex>0) {
+      hasIslands=true;
+    }
     //delete all but biggest island
-    int LargestIslandIndex=getIndexOfLargest(islands);
+
     for (int i = 0; i <dna.cells.length; i++) {
-      if (dna.cells[i].neighborhood!=LargestIslandIndex && dna.cells[i].isVisible) {
+      if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
         dna.cells[i].isVisible=false;
       }
     }
@@ -125,7 +138,9 @@ class Cluster {
   void adjustClusterSize(int size) {
     if (nVisible<size) {
       dna.grow();
-      //adjustClusterSize(size);
+      countVisible();
+
+      adjustClusterSize(size);
     }
   }
 

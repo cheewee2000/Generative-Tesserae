@@ -138,7 +138,7 @@ class DNA {
     }
     //println(neighborTotal);
 
-    return neighborTotal/cells.length*10000;
+    return neighborTotal/cells.length*1000;
   }
 
   float getBranchScore() {
@@ -147,10 +147,10 @@ class DNA {
       //if cell has 2-3  neighbors.
 
       if (cells[i].neighbors>2) {
-        branchScore+=10000/cells[i].neighbors;
+        branchScore+=1000/cells[i].neighbors;
       }
       if (cells[i].neighbors==2) {
-        branchScore+=100000;
+        branchScore+=10000;
       }
     }
     //println(neighborTotal);
