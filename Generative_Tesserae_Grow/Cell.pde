@@ -1,7 +1,7 @@
 class Cell {
   float x, y, z;
   boolean isVisible=false;
-  int neighbors=0;
+  int neighbors=-1;
   boolean hasBeenVisible=false;
   tOcta to;
   color c;
@@ -36,9 +36,9 @@ class Cell {
       //fill(20+(neighbors)*30.0, 255, 100);
       fill(80, 20+(neighbors)*5.0, 100);
 
-      //if (neighborhood>-1) {
-      //  fill(255, neighborhood*5, 100);
-      //}
+      if (neighborhood>-1) {
+        fill(255, neighborhood*5, 100);
+      }
 
       pushMatrix();
       translate(x, y, z);

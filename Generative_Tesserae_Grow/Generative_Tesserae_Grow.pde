@@ -53,7 +53,10 @@ int maxCells=20;
 Population population;  // Population
 
 
-float mutationRate = 0.00015;
+//float mutationRate = 0.00015;
+float mutationRate = 0.00005;
+
+//float mutationRate = 0.000015;
 
 //float mutationRate = 0.00000005;
 
@@ -61,7 +64,7 @@ int margin=75;
 
 int xCount=3; //clusters per row in population
 //int populationSize=xCount*xCount;//make square rootable
-int populationSize=300;//
+int populationSize=50;//
 
 float cellR=30; //cell radius
 int nCells=8; //nunmber of cells in cluster row and column
@@ -74,7 +77,7 @@ int currentCluster=-1;
 float s1f, s2f;
 
 int clusterSize=20;
-boolean didCullIslands=false;
+boolean didCullIslands=true;
 
 void settings() {
   size(900, 900, P3D);
@@ -118,14 +121,15 @@ void draw() {
 
     population.selection();
     population.reproduction();
-    //population.cullIslands();
+    if(frameCount%1000==0) population.cullSmallIslands();
+    //population.cullSmallIslands();
 
     population.testFitness();
+    
     //population.testFitness();
   } else if (didCullIslands==false) {
     population.cullIslands();
     population.testFitness();
-
     didCullIslands=true;
   }
 

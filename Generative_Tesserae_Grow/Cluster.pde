@@ -99,7 +99,7 @@ class Cluster {
       if (dna.cells[i].neighborhood==-1 && dna.cells[i].isVisible) {
         dna.cells[i].neighborhood=neighborhood;
 
-        dna.spreadNeighborhood(i, nVisible);
+        dna.spreadNeighborhood(i, nVisible*10);
         neighborhood++;
       }
     }
@@ -125,11 +125,11 @@ class Cluster {
     }
     //delete all but biggest island
 
-    for (int i = 0; i <dna.cells.length; i++) {
-      if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
-        dna.cells[i].isVisible=false;
-      }
-    }
+    //for (int i = 0; i <dna.cells.length; i++) {
+    //  if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
+    //    dna.cells[i].isVisible=false;
+    //  }
+    //}
 
     adjustClusterSize(clusterSize);
   }
@@ -164,25 +164,27 @@ class Cluster {
   //delete smaller island
 
 
-  //  void cullIslands() {
-  //    Cell[] tempCells = new Cell[dna.cells.length];
-  //    for (int i = 0; i < dna.cells.length; i++) {
-  //      tempCells[i]=dna.cells[i].clone();
-  //    }
+  void cullSmallIslands() {
+    Cell[] tempCells = new Cell[dna.cells.length];
+    for (int i = 0; i < dna.cells.length; i++) {
+      tempCells[i]=dna.cells[i].clone();
+    }
 
-  //    for (int i = 0; i < dna.cells.length; i++) {
-  //      if (dna.cells[i].isVisible) {
-  //        //check if there's a neighbor
-  //        if ( dna.countNeighbors(i)==0) {
-  //          //tempDNA.cells[i].isVisible=false;
-  //          tempCells[i].isVisible=false;
-  //        } else {
-  //          //tempCells[i].isVisible=true;
-  //        }
-  //      }
-  //    }
-  //    dna.cells=tempCells;
-  //  }
+    for (int i = 0; i < dna.cells.length; i++) {
+      if (dna.cells[i].isVisible) {
+        //check if there's a neighbor
+        if ( dna.countNeighbors(i)==0) 
+        {
+          //tempDNA.cells[i].isVisible=false;
+          tempCells[i].isVisible=false;
+        }
+        //else {
+        //  //tempCells[i].isVisible=true;
+        //}
+      }
+    }
+    dna.cells=tempCells;
+  }
 
 
 

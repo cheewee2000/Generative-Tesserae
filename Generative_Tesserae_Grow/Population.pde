@@ -125,7 +125,11 @@ class Population {
       clusters[i].cullIslands();
     }
   }
-  
+    void cullSmallIslands() {
+    for (int i = 0; i < clusters.length; i++) {
+      clusters[i].cullSmallIslands();
+    }
+  }
   
 
   // Find highest fintess for the population
