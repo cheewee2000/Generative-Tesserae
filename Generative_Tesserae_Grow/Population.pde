@@ -42,9 +42,12 @@ class Population {
     //for (int i = 0; i < clusters.length; i++) {
     //display 9 culsters
     for (int i = 0; i < 9; i++) {
+      clusters[i].draw();
+
       clusters[i].drawBoundingBox();
       picker.start(i);
-      clusters[i].draw();
+
+      clusters[i].drawClickPlate();
     }
     picker.stop();
   }
@@ -70,7 +73,7 @@ class Population {
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
     for (int i = 0; i < clusters.length; i++) {
       float fitnessNormal = map(clusters[i].getFitness(), 0, maxFitness, 0, 1);
-      int n = (int) (fitnessNormal * 100);  // Arbitrary multiplier
+      int n = (int) (fitnessNormal * 10000);  // Arbitrary multiplier
       for (int j = 0; j < n; j++) {
         matingPool.add(clusters[i]);
       }

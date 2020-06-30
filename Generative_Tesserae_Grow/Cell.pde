@@ -13,10 +13,9 @@ class Cell {
     y=_y;
     z=_z;
     to=new tOcta();
-    c=color(255);
+    c=color(255, 120, 150);
     neighborhood=-1;
     address=int(x+y*nCells+z*nCells*nCells);
-    
   }
 
   Cell clone() {
@@ -30,19 +29,24 @@ class Cell {
     if (isVisible) {
       hasBeenVisible=true;
       colorMode(HSB, 100);
-      noStroke();
-      //strokeWeight(.01);
-      //stroke(c);
-      //fill(20+(neighbors)*30.0, 255, 100);
-      fill(80, 20+(neighbors)*5.0, 100);
+      //noStroke();
 
-      if (neighborhood>-1) {
-        fill(255, neighborhood*5, 100);
-      }
+      //fill(20+(neighbors)*30.0, 255, 100);
+      //fill(80, 20+(neighbors)*5.0, 100);
+      //noFill();
+      //if (neighborhood>-1) {
+      //  fill(255, neighborhood*5, 100);
+      //}
 
       pushMatrix();
+      strokeWeight(.01);
+      stroke(25, 50, 50);
+
       translate(x, y, z);
+      //fill(90, 90, 90);
       //box( cellR);
+      noFill();
+
       to.draw();
       popMatrix();
     }

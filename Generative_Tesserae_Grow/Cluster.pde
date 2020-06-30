@@ -1,7 +1,7 @@
 
 class Cluster {
   // Fitness and DNA
-  float fitness;
+  volatile float fitness;
   DNA dna;
   PVector pos;
   boolean selected=false;
@@ -9,7 +9,13 @@ class Cluster {
   color c=color(255, 255, 255);
   int nVisible=0;
   boolean hasIslands=false;
+  boolean showFitness=false;
 
+  float boxWidth;
+  int adjustClusterSizeMax;
+
+  float areaVolume=0;
+  float branchiness=0;
   //constructor
   Cluster( PVector pos_, DNA dna_) {
     dna = dna_;
@@ -22,11 +28,15 @@ class Cluster {
       pushMatrix();
       translate(pos.x, pos.y);
       if (dna.cells[i].isVisible) {
+
         dna.cells[i].draw();
       }
       popMatrix();
     }
   }
+
+
+
 
   void drawBoundingBox() {
     //cluster bounding box
@@ -38,15 +48,45 @@ class Cluster {
 
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
-    translate((nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2), (nCells-1)*cellR/4*sqrt(2));
+    float boxPos=(nCells-1)*cellR/4*sqrt(2);
+    translate(boxPos, boxPos, boxPos);
+    boxWidth=nCells*cellR/sqrt(2);
 
-    box(nCells*cellR/sqrt(2));
+    box(boxWidth);
 
+    //box(nCells*cellR/sqrt(2)*2);
 
     //text messes up lighting
-    //textSize(16);
-    //fill(255);
+    textSize(10);
+    fill(255);
     //text(nf(fitness, 1, 1), nCells*cellR/2+10, nCells*cellR/2);
+
+    //rect(10, 10, 20, 20);
+    //if (showFitness) {
+    pushMatrix();
+    translate(-boxWidth/2+3, boxWidth/2-3, boxWidth/2);
+    int yPos=0;
+    text("FIT: "+nf(fitness, 1, 1), 0, yPos);
+    yPos-=10;
+    text("AREA/VOLUME: "+nf(areaVolume, 1, 1), 0, yPos);
+    yPos-=10;
+    text("BRANCHINESS: "+nf(branchiness, 1, 1), 0, yPos);
+    yPos-=10;
+    text("# CELLS: "+nf(nVisible, 1, 1), 0, yPos);
+
+    popMatrix();
+
+    //}
+    popMatrix();
+  }
+
+  void drawClickPlate() {
+
+    //draw rect for picker
+    pushMatrix();
+    translate(pos.x, pos.y, boxWidth);
+    fill(50);
+    rect(0, 0, boxWidth*.1, boxWidth*.1);
     popMatrix();
   }
 
@@ -57,13 +97,11 @@ class Cluster {
     //}
     //if(neighbors>300)fitness=10;
     //else fitness=1;
-    fitness=01;
     //fitness+=random(100);
+    areaVolume=dna.getSurfaceVolumeRatio()*s1f;
+    branchiness=dna.getBranchScore()*s2f;
+    fitness=areaVolume+branchiness;
 
-
-
-    fitness=dna.getSurfaceVolumeRatio()*s1f;
-    fitness+=dna.getBranchScore()*s2f;
     //println(fitness);
 
     //if (hasIslands) fitness-=100000;
@@ -127,21 +165,39 @@ class Cluster {
     }
     //delete all but biggest island
 
+    int nGrow=0;
+
     for (int i = 0; i <dna.cells.length; i++) {
       if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
         dna.cells[i].isVisible=false;
+        nGrow++;
       }
     }
 
-    //adjustClusterSize(clusterSize);
+    //replace deleted islands
+    for (int i = 0; i < nGrow; i++) {
+      dna.grow();
+    }
+
+    adjustClusterSizeMax=10;
+    adjustClusterSize(clusterSize);
   }
 
 
   void adjustClusterSize(int size) {
-    if (nVisible<size) {
+    if (nVisible<size && adjustClusterSizeMax>0) {
       dna.grow();
-      countVisible();
+      //countVisible();
 
+
+      //count visible cells
+      nVisible=0;
+      for (int i = 0; i < dna.cells.length; i++) {
+        if (dna.cells[i].isVisible) {
+          nVisible++;
+        }
+      }
+      adjustClusterSizeMax--;
       adjustClusterSize(size);
     }
   }

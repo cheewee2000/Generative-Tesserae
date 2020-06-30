@@ -140,7 +140,6 @@ class DNA {
 
     return (neighborTotal/cells.length)*100000;
     //    return neighborTotal*10000;
-
   }
 
   float getBranchScore() {
@@ -191,7 +190,7 @@ class DNA {
       for (int i=0; i<cells.length; i++) {
         // println(i);
         if ( c!=i && cells[i].isVisible && cells[i].neighborhood==-1) {
-        //if ( c!=i && cells[i].isVisible ) {
+          //if ( c!=i && cells[i].isVisible ) {
 
           if (dist(cells[i].x, cells[i].y, cells[i].z, cells[c].x, cells[c].y, cells[c].z)<=cellR/sqrt(2)+1) {
             cells[i].neighborhood=cells[c].neighborhood;

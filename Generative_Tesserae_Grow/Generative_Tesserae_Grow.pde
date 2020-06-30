@@ -11,28 +11,30 @@ import controlP5.*;
 
 ControlP5 cp5;
 
+//mouse hover to show fitness in UI
+
+
+//print out current mutation value
+//print UI mutation range
+
 //track cell neighbors. for counting and for constraining growth
 //allow 1-14 ports for connection
 
 
 //constrain to 10, 20 cells
 //UI
+
+
 //ray trace exposed surface area
 
-//sliders for fitness criteria
 //look for growth that shares less neighboring faces
 
-//print out current mutation value
-//print UI mutation range
+
 
 //should crossover be more random?
 
-//survey islands and delete all but main island
 //build bridge between islands
 
-//
-
-//mouse hover to show fitness in UI
 
 //3d intuive exlporation UI
 
@@ -64,7 +66,7 @@ int margin=75;
 
 int xCount=3; //clusters per row in population
 //int populationSize=xCount*xCount;//make square rootable
-int populationSize=50;//
+int populationSize=100;//
 
 float cellR=30; //cell radius
 int nCells=8; //nunmber of cells in cluster row and column
@@ -94,6 +96,8 @@ void setup() {
 
   surface.setTitle("Main sketch");
   child = new ChildApplet();
+
+  textMode(SHAPE);
 }
 
 
@@ -105,7 +109,7 @@ void draw() {
   colorMode(RGB, 255);
 
   background(200);
-  lights();
+  //lights();
   //population.testFitness();
   //don't include in peasycam rotation and zoom
   //cam.beginHUD();
@@ -118,13 +122,14 @@ void draw() {
   //ambientLight(150, 150, 150);
 
   if (runOptimize) {
-    population.testFitness();
 
     population.selection();
     population.reproduction();
     //if (frameCount%100==0) population.cullSmallIslands();
     //if (frameCount%100==0) population.adjustClusterSize();
     population.cullIslands();
+    population.testFitness(); //end with test fitness to display current fitness
+
 
     //population.testFitness();
   } else if (didCullIslands==false) {
@@ -177,12 +182,20 @@ void keyPressed() {
   //}
 }
 
+//void mouseMoved() {
+//  int id= picker.get(mouseX, mouseY);
 
+//  if (id >= 0 && id<population.clusters.length) {
+//    population.clusters[id].showFitness=true;
+//  } else {
+//    //population.clusters[id].showFitness=false;
+//  }
+//}
 void mouseReleased() {
   int id = picker.get(mouseX, mouseY);
   if (id >= 0 && id<population.clusters.length) {
     //println(id);
-    cam.lookAt(population.clusters[id].pos.x+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.y+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.z, 300, 500);
+    cam.lookAt(population.clusters[id].pos.x+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.y+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.z+nCells*cellR/sqrt(2)/2, 320, 400);
   }
 
   //highlight
@@ -190,10 +203,14 @@ void mouseReleased() {
     if (id ==i) {
       //println(id);
       population.clusters[id].setColor(color(255, 0, 0));
+      population.clusters[id].showFitness=true;
+
       currentCluster=id;
       return;
     } else {
       population.clusters[i].setColor(color(255));
+      population.clusters[i].showFitness=false;
+
       currentCluster=-1;
     }
   }
