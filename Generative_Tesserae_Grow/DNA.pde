@@ -130,6 +130,24 @@ class DNA {
 
 
 
+  int getConectionFitness() {
+    int fitness=0;
+    nConnections=s3i;
+    
+    for (int i = 0; i < cells.length; i++) {
+      //println(cells[i].neighbors);
+      if(nConnections==cells[i].neighbors){
+        fitness+=1000;
+        //println(fitness);
+      }
+      //else connectionFitness-=1000;
+    }
+    return fitness;
+  }
+  
+  
+
+
   float getSurfaceVolumeRatio() {
     float neighborTotal=0;
     for (int i = 0; i < cells.length; i++) {
@@ -150,7 +168,7 @@ class DNA {
       if (cells[i].neighbors>2) {
         branchScore+=10000/cells[i].neighbors;
       }
-      if (cells[i].neighbors==2) {
+      if (cells[i].neighbors==2 || cells[i].neighbors==1) {
         branchScore+=100000;
       }
     }

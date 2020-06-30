@@ -11,14 +11,12 @@ import controlP5.*;
 
 ControlP5 cp5;
 
-//mouse hover to show fitness in UI
 
 
 //print out current mutation value
 //print UI mutation range
 
-//track cell neighbors. for counting and for constraining growth
-//allow 1-14 ports for connection
+//allow 1-14 ports for connection - slider 7%-100%
 
 
 //constrain to 10, 20 cells
@@ -76,10 +74,15 @@ import nervoussystem.obj.*;
 boolean saveOBJ=false;
 int currentCluster=-1;
 
-float s1f, s2f;
+float  s1f, s2f,  s4f;
+int s3i;
 
 int clusterSize=20;
 boolean didCullIslands=true;
+
+int nConnections=4;
+
+
 
 void settings() {
   size(900, 900, P3D);
@@ -94,7 +97,7 @@ void setup() {
 
   population = new Population(mutationRate, populationSize);
 
-  surface.setTitle("Main sketch");
+  surface.setTitle("Main");
   child = new ChildApplet();
 
   textMode(SHAPE);

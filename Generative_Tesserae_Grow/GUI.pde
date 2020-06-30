@@ -1,8 +1,11 @@
 class ChildApplet extends PApplet {
   //JFrame frame;
-  float c1 = clusterSize;
+  int c1 = clusterSize;
   float s1 = .5;
   float s2 = .5;
+  int s3 = 2;
+  float s4 = .5;
+
   float m1 = .0;
 
   boolean _generate = false;
@@ -16,7 +19,7 @@ class ChildApplet extends PApplet {
     size(400, 400, P2D);
   }
   public void setup() { 
-    surface.setTitle("Child sketch");
+    surface.setTitle("GUI");
     //arcball2 = new Arcball(this, 300);
     int row=70;
 
@@ -61,7 +64,27 @@ class ChildApplet extends PApplet {
       ;
 
     row+=25;
+    cp5.addSlider("s3")
+      .setPosition(25, row)
+      .setRange(1, 14)
+      .setValue(s3)
+      .setSize(200, 20)
+      .setCaptionLabel("# connections")
+      ;
 
+    row+=25;
+    
+        cp5.addSlider("s4")
+      .setPosition(25, row)
+      .setRange(0, 1)
+      .setValue(s4)
+      .setSize(200, 20)
+      .setCaptionLabel("connection strength")
+      ;
+
+    row+=25;
+    
+    
     cp5.addButton("shrink")
       .setPosition(25, row)
       .setSize(100, 20)
@@ -106,6 +129,9 @@ class ChildApplet extends PApplet {
     mutationRate = 0.00015+m1*.2;
     s1f = s1;
     s2f = s2;
+    s3i = s3;
+    s4f=s4;
+
     clusterSize=int(c1);
 
 

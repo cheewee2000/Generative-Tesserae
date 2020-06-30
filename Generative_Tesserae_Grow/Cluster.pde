@@ -16,6 +16,8 @@ class Cluster {
 
   float areaVolume=0;
   float branchiness=0;
+  float connectionFitness=0;
+
   //constructor
   Cluster( PVector pos_, DNA dna_) {
     dna = dna_;
@@ -98,9 +100,12 @@ class Cluster {
     //if(neighbors>300)fitness=10;
     //else fitness=1;
     //fitness+=random(100);
+
     areaVolume=dna.getSurfaceVolumeRatio()*s1f;
     branchiness=dna.getBranchScore()*s2f;
-    fitness=areaVolume+branchiness;
+    connectionFitness=dna.getConectionFitness()*s4f;
+
+    fitness=areaVolume+branchiness+connectionFitness;
 
     //println(fitness);
 
