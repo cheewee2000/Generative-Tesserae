@@ -30,7 +30,7 @@ ControlP5 cp5;
 //survey islands and delete all but main island
 //build bridge between islands
 
-//increase population size. hide in background. display sub matrix
+//
 
 //mouse hover to show fitness in UI
 
@@ -118,11 +118,13 @@ void draw() {
   //ambientLight(150, 150, 150);
 
   if (runOptimize) {
+    population.testFitness();
 
     population.selection();
     population.reproduction();
     //if (frameCount%100==0) population.cullSmallIslands();
-    population.testFitness();
+    //if (frameCount%100==0) population.adjustClusterSize();
+    population.cullIslands();
 
     //population.testFitness();
   } else if (didCullIslands==false) {

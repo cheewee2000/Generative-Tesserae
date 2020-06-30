@@ -57,14 +57,14 @@ class Cluster {
     //}
     //if(neighbors>300)fitness=10;
     //else fitness=1;
-    //fitness=01;
+    fitness=01;
     //fitness+=random(100);
 
 
 
     fitness=dna.getSurfaceVolumeRatio()*s1f;
     fitness+=dna.getBranchScore()*s2f;
-
+    //println(fitness);
 
     //if (hasIslands) fitness-=100000;
   }
