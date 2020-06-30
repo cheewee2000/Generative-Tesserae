@@ -125,6 +125,14 @@ class Population {
       clusters[i].cullIslands();
     }
   }
+  
+    void adjustClusterSize() {
+    for (int i = 0; i < clusters.length; i++) {
+      clusters[i].adjustClusterSize();
+    }
+  }
+  
+  
     void cullSmallIslands() {
     for (int i = 0; i < clusters.length; i++) {
       clusters[i].cullSmallIslands();

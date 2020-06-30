@@ -121,11 +121,9 @@ void draw() {
 
     population.selection();
     population.reproduction();
-    if(frameCount%1000==0) population.cullSmallIslands();
-    //population.cullSmallIslands();
-
+    //if (frameCount%100==0) population.cullSmallIslands();
     population.testFitness();
-    
+
     //population.testFitness();
   } else if (didCullIslands==false) {
     population.cullIslands();

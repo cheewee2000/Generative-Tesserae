@@ -64,6 +64,8 @@ class Cluster {
 
     fitness=dna.getSurfaceVolumeRatio()*s1f;
     fitness+=dna.getBranchScore()*s2f;
+
+
     //if (hasIslands) fitness-=100000;
   }
 
@@ -125,13 +127,13 @@ class Cluster {
     }
     //delete all but biggest island
 
-    //for (int i = 0; i <dna.cells.length; i++) {
-    //  if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
-    //    dna.cells[i].isVisible=false;
-    //  }
-    //}
+    for (int i = 0; i <dna.cells.length; i++) {
+      if (dna.cells[i].neighborhood!=largestIslandIndex && dna.cells[i].isVisible) {
+        dna.cells[i].isVisible=false;
+      }
+    }
 
-    adjustClusterSize(clusterSize);
+    //adjustClusterSize(clusterSize);
   }
 
 
