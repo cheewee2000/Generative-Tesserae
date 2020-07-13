@@ -1,12 +1,12 @@
 class ChildApplet extends PApplet {
   //JFrame frame;
   int c1 = clusterSize;
-  float s1 = .5;
-  float s2 = .5;
+  float s1 = 0.1;
+  float s2 = 0.1;
   int s3 = 2;
-  float s4 = .5;
+  float s4 = 0;
 
-  float m1 = .0;
+  float m1 = .01;
 
   boolean _generate = false;
 
