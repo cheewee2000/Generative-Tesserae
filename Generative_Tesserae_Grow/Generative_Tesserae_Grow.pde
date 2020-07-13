@@ -156,9 +156,9 @@ void draw() {
 
     String desktopPath = System.getProperty("user.home") + "/Desktop/"+cellCount+"-"+fit+".obj";
 
-    beginRaw("nervoussystem.obj.OBJExport", desktopPath);
+    beginRecord("nervoussystem.obj.OBJExport", desktopPath);
     population.clusters[currentCluster].draw();
-    endRaw();
+    endRecord();
     saveOBJ = false;
   } else {
     population.live();
