@@ -1,8 +1,8 @@
 class ChildApplet extends PApplet {
   //JFrame frame;
   int c1 = clusterSize;
-  float s1 = .5;
-  float s2 = .5;
+  float s1 = .1;
+  float s2 = .1;
   int s3 = 2;
   float s4 = .5;
 
@@ -73,8 +73,8 @@ class ChildApplet extends PApplet {
       ;
 
     row+=25;
-    
-        cp5.addSlider("s4")
+
+    cp5.addSlider("s4")
       .setPosition(25, row)
       .setRange(0, 1)
       .setValue(s4)
@@ -83,8 +83,8 @@ class ChildApplet extends PApplet {
       ;
 
     row+=25;
-    
-    
+
+
     cp5.addButton("shrink")
       .setPosition(25, row)
       .setSize(100, 20)
@@ -126,11 +126,14 @@ class ChildApplet extends PApplet {
 
   public void draw() {
     background(150);
+    
+    if(!saveMatrix){
     mutationRate = 0.00015+m1*.2;
     s1f = s1;
     s2f = s2;
     s3i = s3;
     s4f=s4;
+    }
 
     clusterSize=int(c1);
 

@@ -60,7 +60,7 @@ import nervoussystem.obj.*;
 boolean saveOBJ=false;
 int currentCluster=-1;
 
-float  s1f, s2f,  s4f;
+float  s1f, s2f, s4f;
 int s3i;
 
 int clusterSize=20;
@@ -68,6 +68,10 @@ boolean didCullIslands=true;
 
 int nConnections=4;
 
+boolean saveMatrix=false;
+float matrixSteps=10; //grid cols, rows
+int maxGenerations=10;
+int nGenerations=0;
 
 
 void settings() {
@@ -110,7 +114,8 @@ void draw() {
   //directionalLight(126, 126, 126, 1.5, 1, -1);
   //ambientLight(150, 150, 150);
 
-  if (runOptimize) {
+  if (runOptimize || saveMatrix) 
+  {
 
     population.selection();
     population.reproduction();
@@ -134,8 +139,12 @@ void draw() {
   if (saveOBJ && currentCluster>=0) {
     int cellCount=population.clusters[currentCluster].nVisible;
     float fit=population.clusters[currentCluster].fitness;
+    int areaVolume=int(population.clusters[currentCluster].areaVolume);
+    int branchiness=int(population.clusters[currentCluster].branchiness);
 
-    String desktopPath = System.getProperty("user.home") + "/Desktop/"+cellCount+"-"+fit+".obj";
+    String filePath = cellCount+"-"+areaVolume+"-"+branchiness+".obj";
+
+    String desktopPath = System.getProperty("user.home") + "/Desktop/STL/"+filePath;
 
     beginRecord("nervoussystem.obj.OBJExport", desktopPath);
     population.clusters[currentCluster].draw();
@@ -143,6 +152,27 @@ void draw() {
     saveOBJ = false;
   } else {
     population.live();
+  }
+
+  if (saveMatrix) {
+    if (nGenerations>=maxGenerations) {
+      nGenerations=0;
+
+      saveOBJ=true;
+      currentCluster=0;
+      s1f+=1/matrixSteps;
+      if (s1f>=1.0) {
+        s1f=1.0;
+        s2f+=1/matrixSteps;
+      }
+
+      //exit
+      if (s2f>=1.0) {
+        exit();
+      }
+    } else {
+      nGenerations++;
+    }
   }
 }
 
@@ -165,6 +195,8 @@ void keyPressed() {
     runOptimize=false;
   } else if (key == 's' ) {
     saveOBJ=true;
+  } else if (key == 'x' ) {
+    saveMatrix=true;
   }
   //else if (key == 'i' ) {
   //  population.cullIslands();
