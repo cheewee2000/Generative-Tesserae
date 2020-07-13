@@ -149,7 +149,7 @@ class DNA {
 
 
   float getSurfaceVolumeRatio() {
-    float neighborTotal=0;
+    float neighborTotal=1;
     for (int i = 0; i < cells.length; i++) {
       //add up neighbor score
       neighborTotal+=cells[i].neighbors;
@@ -158,6 +158,7 @@ class DNA {
 
     return (neighborTotal/cells.length)*100000;
     //    return neighborTotal*10000;
+
   }
 
   float getBranchScore() {

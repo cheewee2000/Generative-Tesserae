@@ -34,6 +34,11 @@ ControlP5 cp5;
 //build bridge between islands
 
 
+//increase population size. hide in background. display sub matrix
+
+//mouse hover to show fitness in UI
+
+
 //3d intuive exlporation UI
 
 

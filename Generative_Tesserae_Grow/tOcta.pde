@@ -67,7 +67,4 @@ class tOcta {
     }
     popMatrix();
   }
-  
-  
-  
 }

@@ -28,10 +28,7 @@ class Population {
 
 
     //initial cluster of 20
-    //for (int j=0; j<clusterSize; j++) 
-    for (int j=0; j<nCells*nCells; j++) 
-
-    {
+    for (int j=0; j<clusterSize; j++) {
       grow();
     }
   }
@@ -131,20 +128,20 @@ class Population {
       clusters[i].cullIslands();
     }
   }
-
-  void adjustClusterSize() {
+  
+    void adjustClusterSize() {
     for (int i = 0; i < clusters.length; i++) {
-      clusters[i].adjustClusterSize(clusterSize);
+      clusters[i].adjustClusterSize(20);
     }
   }
-
-
-  void cullSmallIslands() {
+  
+  
+    void cullSmallIslands() {
     for (int i = 0; i < clusters.length; i++) {
       clusters[i].cullSmallIslands();
     }
   }
-
+  
 
   // Find highest fintess for the population
   float getMinFitness() {

@@ -99,7 +99,7 @@ class Cluster {
     //}
     //if(neighbors>300)fitness=10;
     //else fitness=1;
-    //fitness+=random(100);
+
 
     areaVolume=dna.getSurfaceVolumeRatio()*s1f;
     branchiness=dna.getBranchScore()*s2f;
@@ -107,7 +107,6 @@ class Cluster {
 
     fitness=areaVolume+branchiness+connectionFitness;
 
-    //println(fitness);
 
     //if (hasIslands) fitness-=100000;
   }
