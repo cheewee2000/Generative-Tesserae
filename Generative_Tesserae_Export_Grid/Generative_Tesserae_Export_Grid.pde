@@ -32,6 +32,20 @@ ControlP5 cp5;
 //user selection of winners
 
 
+boolean saveMatrix=false;
+float matrixSteps=7; //grid cols, rows
+int maxGenerations=80;
+int nGenerations=0;
+
+int populationSize=300;//
+int clusterSize=2;
+
+int nCellsX=10; //nunmber of cells in cluster row and column
+int nCellsY=10; //nunmber of cells in cluster row and column
+int nCellsZ=1; //nunmber of cells in cluster row and column
+
+
+
 //fitness ranges
 int minCells=10;
 int maxCells=20;
@@ -39,21 +53,20 @@ int maxCells=20;
 Population population;  // Population
 
 
-//float mutationRate = 0.00015;
-float mutationRate = 0.00005;
+float mutationRate = 0.00000025;
+//float mutationRate = 0.00005;
 
 //float mutationRate = 0.000015;
 
 //float mutationRate = 0.00000005;
 
-int margin=75;
+int margin=35;
 
 int xCount=3; //clusters per row in population
 //int populationSize=xCount*xCount;//make square rootable
-int populationSize=100;//
 
 float cellR=30; //cell radius
-int nCells=8; //nunmber of cells in cluster row and column
+
 boolean runOptimize=false;
 
 import nervoussystem.obj.*;
@@ -63,15 +76,10 @@ int currentCluster=-1;
 float  s1f, s2f, s4f;
 int s3i;
 
-int clusterSize=20;
 boolean didCullIslands=true;
 
 int nConnections=4;
 
-boolean saveMatrix=false;
-float matrixSteps=10; //grid cols, rows
-int maxGenerations=10;
-int nGenerations=0;
 
 
 void settings() {
@@ -124,6 +132,7 @@ void draw() {
     population.cullIslands();
     population.testFitness(); //end with test fitness to display current fitness
 
+    nGenerations++;
 
     //population.testFitness();
   } else if (didCullIslands==false) {
@@ -136,44 +145,78 @@ void draw() {
   //if (!saveOBJ) {
   //  population.live();
   //}
-  if (saveOBJ && currentCluster>=0) {
-    int cellCount=population.clusters[currentCluster].nVisible;
-    float fit=population.clusters[currentCluster].fitness;
-    int areaVolume=int(population.clusters[currentCluster].areaVolume);
-    int branchiness=int(population.clusters[currentCluster].branchiness);
 
-    String filePath = cellCount+"-"+areaVolume+"-"+branchiness+".obj";
-
-    String desktopPath = System.getProperty("user.home") + "/Desktop/STL/"+filePath;
-
-    beginRecord("nervoussystem.obj.OBJExport", desktopPath);
-    population.clusters[currentCluster].draw();
-    endRecord();
-    saveOBJ = false;
-  } else {
-    population.live();
-  }
 
   if (saveMatrix) {
     if (nGenerations>=maxGenerations) {
       nGenerations=0;
 
-      saveOBJ=true;
+
+      //pick highest fitness from populationt to export
+      float bestFitness=0;
       currentCluster=0;
-      s1f+=1/matrixSteps;
-      if (s1f>=1.0) {
-        s1f=1.0;
-        s2f+=1/matrixSteps;
+      for (int i=0; i<population.clusters.length; i++) {
+        if (population.clusters[i].fitness>bestFitness) {
+          bestFitness = abs(population.clusters[i].fitness);
+          currentCluster=i;
+        }
       }
+      saveOBJ=true;
+    }
+  }
+
+
+  if (saveOBJ && currentCluster>=0) {
+    int cellCount=population.clusters[currentCluster].nVisible;
+    //float fit=population.clusters[currentCluster].fitness;
+    int areaVolume=int(population.clusters[currentCluster].areaVolume);
+    int branchiness=int(population.clusters[currentCluster].branchiness);
+
+    String filePath = "c_"+clusterSize+"-"+areaVolume+"-br_"+nf(s2f, 1, 1)+"-"+branchiness+"-"+cellCount+".obj";
+
+    String desktopPath = System.getProperty("user.home") + "/Desktop/STL/"+filePath;
+
+    beginRecord("nervoussystem.obj.OBJExport", desktopPath);
+    pushMatrix();
+    float gridSize=2400;
+    translate(clusterSize/32.0*gridSize, (1+s2f)/2.0*gridSize);
+        //translate(clusterSize/32.0*gridSize, 0);
+
+    population.clusters[currentCluster].draw();
+    popMatrix();
+    endRecord();
+
+    saveOBJ = false;
+
+    if (saveMatrix) {
+      clusterSize+=5;
+      if (clusterSize>32) {
+        clusterSize=2;
+        s2f+=2/matrixSteps;
+      }
+
+
+      //s1f+=1/matrixSteps;
+      //if (s1f>=1.0) {
+      //  s1f=0.1;
+      //  s2f+=1/matrixSteps;
+      //}
 
       //exit
       if (s2f>=1.0) {
         exit();
       }
-    } else {
-      nGenerations++;
+      reset();
     }
+    //population.mutate(.2);
+  } else {
+    population.live();
   }
+}
+
+void reset() {
+
+  population = new Population(mutationRate, populationSize);
 }
 
 void keyPressed() {
@@ -216,7 +259,7 @@ void mouseReleased() {
   int id = picker.get(mouseX, mouseY);
   if (id >= 0 && id<population.clusters.length) {
     //println(id);
-    cam.lookAt(population.clusters[id].pos.x+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.y+nCells*cellR/sqrt(2)/2, population.clusters[id].pos.z+nCells*cellR/sqrt(2)/2, 320, 400);
+    cam.lookAt(population.clusters[id].pos.x+nCellsX*cellR/sqrt(2)/2, population.clusters[id].pos.y+nCellsY*cellR/sqrt(2)/2, population.clusters[id].pos.z+nCellsZ*cellR/sqrt(2)/2, 320, 400);
   }
 
   //highlight

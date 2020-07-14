@@ -14,18 +14,19 @@ class DNA {
     int count=0;
     int center=0;
 
-    cells = new Cell[nCells*nCells*nCells*2];
+    cells = new Cell[nCellsX*nCellsY*nCellsZ*2];
     //setup array of cells
-    for (int i=0; i<nCells; i++ ) {
-      for (int j=0; j<nCells; j++ ) {
-        for (int k=0; k<nCells*2; k++ ) {
+    for (int i=0; i<nCellsX; i++ ) {
+      for (int j=0; j<nCellsY; j++ ) {
+        for (int k=0; k<nCellsZ*2; k++ ) {
 
           float alt=(1+k%2*-1);
           float sc=cellR/2;
 
-          cells[count] = new Cell(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt);
+          //cells[count] = new Cell(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt);
+          cells[count] = new Cell(i*u[0]*sc+j*v[0]*sc+w[0]*sc*alt, i*u[2]*sc+j*v[2]*sc+w[2]*sc*alt, i*u[1]*sc+j*v[1]*sc+w[1]*sc*k);
 
-          if (i==int(nCells/2) && j==int(nCells/2) && k==nCells)center=count;
+          if (i==int(nCellsX/2) && j==int(nCellsY/2) && k==nCellsZ)center=count;
 
           count++;
         }
@@ -133,10 +134,10 @@ class DNA {
   int getConectionFitness() {
     int fitness=0;
     nConnections=s3i;
-    
+
     for (int i = 0; i < cells.length; i++) {
       //println(cells[i].neighbors);
-      if(nConnections==cells[i].neighbors){
+      if (nConnections==cells[i].neighbors) {
         fitness+=1000;
         //println(fitness);
       }
@@ -144,37 +145,43 @@ class DNA {
     }
     return fitness;
   }
-  
-  
+
+
 
 
   float getSurfaceVolumeRatio() {
     float neighborTotal=0;
+    float visibleTotal=0;
     for (int i = 0; i < cells.length; i++) {
       //add up neighbor score
-      neighborTotal+=cells[i].neighbors;
+      if (cells[i].isVisible) {
+        neighborTotal+=cells[i].neighbors;
+        visibleTotal++;
+      }
     }
     //println(neighborTotal);
 
-    return (neighborTotal/cells.length)*100000;
+    return (visibleTotal/neighborTotal)*100000;
     //    return neighborTotal*10000;
   }
 
   float getBranchScore() {
-    float branchScore=1;
+    float branchScore=0;
     for (int i = 0; i < cells.length; i++) {
       //if cell has 2-3  neighbors.
-
-      if (cells[i].neighbors>2) {
-        branchScore+=10000/cells[i].neighbors;
-      }
-      if (cells[i].neighbors==2 || cells[i].neighbors==1) {
-        branchScore+=100000;
+      if (cells[i].isVisible) {
+        if (cells[i].neighbors>2) {
+          branchScore-=1000*cells[i].neighbors;
+        }
+        if (cells[i].neighbors<=2 && cells[i].neighbors>0) {
+          branchScore+=100000;
+        }
+        //println(cells[i].neighbors);
       }
     }
     //println(neighborTotal);
 
-    return branchScore;
+    return branchScore/3.0;//adjust range to fit other fitness criteria
   }
 
 

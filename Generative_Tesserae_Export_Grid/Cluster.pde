@@ -12,6 +12,8 @@ class Cluster {
   boolean showFitness=false;
 
   float boxWidth;
+  float boxHeight;
+  float boxDepth;
   int adjustClusterSizeMax;
 
   float areaVolume=0;
@@ -28,7 +30,8 @@ class Cluster {
   void draw() {
     for (int i = 0; i < dna.cells.length; i++) {
       pushMatrix();
-      translate(pos.x, pos.y);
+      
+      if(!saveOBJ)translate(pos.x, pos.y);
       if (dna.cells[i].isVisible) {
 
         dna.cells[i].draw();
@@ -50,11 +53,14 @@ class Cluster {
 
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
-    float boxPos=(nCells-1)*cellR/4*sqrt(2);
-    translate(boxPos, boxPos, boxPos);
-    boxWidth=nCells*cellR/sqrt(2);
+    float boxPos=(nCellsX-1)*cellR/4*sqrt(2);
 
-    box(boxWidth);
+    translate(boxPos, boxPos, (nCellsX-1));
+    boxWidth=nCellsX*cellR/sqrt(2);
+    boxHeight=nCellsY*cellR/sqrt(2);
+    boxDepth=nCellsZ*cellR/sqrt(2);
+
+    box(boxWidth, boxHeight, boxDepth);
 
     //box(nCells*cellR/sqrt(2)*2);
 
@@ -66,7 +72,7 @@ class Cluster {
     //rect(10, 10, 20, 20);
     //if (showFitness) {
     pushMatrix();
-    translate(-boxWidth/2+3, boxWidth/2-3, boxWidth/2);
+    translate(-boxWidth/2+3, boxHeight/2-3, boxDepth/2);
     int yPos=0;
     text("FIT: "+nf(fitness, 1, 1), 0, yPos);
     yPos-=10;
@@ -101,9 +107,9 @@ class Cluster {
     //else fitness=1;
     //fitness+=random(100);
 
-    areaVolume=dna.getSurfaceVolumeRatio()*s1f;
+    //areaVolume=dna.getSurfaceVolumeRatio()*s1f;
     branchiness=dna.getBranchScore()*s2f;
-    connectionFitness=dna.getConectionFitness()*s4f;
+    //connectionFitness=dna.getConectionFitness()*s4f;
 
     fitness=areaVolume+branchiness+connectionFitness;
 
@@ -184,7 +190,7 @@ class Cluster {
       dna.grow();
     }
 
-    adjustClusterSizeMax=10;
+    adjustClusterSizeMax=20;
     adjustClusterSize(clusterSize);
   }
 

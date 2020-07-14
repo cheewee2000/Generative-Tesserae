@@ -15,7 +15,7 @@ class Cell {
     to=new tOcta();
     c=color(255, 120, 150);
     neighborhood=-1;
-    address=int(x+y*nCells+z*nCells*nCells);
+    address=int(x+y*nCellsX+z*nCellsY*nCellsZ);
   }
 
   Cell clone() {

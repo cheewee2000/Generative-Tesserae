@@ -46,7 +46,7 @@ class Population {
       clusters[i].drawBoundingBox();
       picker.start(i);
 
-      clusters[i].drawClickPlate();
+      //clusters[i].drawClickPlate();
     }
     picker.stop();
   }

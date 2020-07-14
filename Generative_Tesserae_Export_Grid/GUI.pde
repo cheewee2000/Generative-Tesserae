@@ -1,11 +1,10 @@
 class ChildApplet extends PApplet {
   //JFrame frame;
   int c1 = clusterSize;
-  float s1 = .1;
-  float s2 = .1;
+  float s1 = 0.0;
+  float s2 = -1;
   int s3 = 2;
-  float s4 = .5;
-
+  float s4 = 0;
   float m1 = .0;
 
   boolean _generate = false;
@@ -57,7 +56,7 @@ class ChildApplet extends PApplet {
 
     cp5.addSlider("s2")
       .setPosition(25, row)
-      .setRange(0, 1)
+      .setRange(-1, 1)
       .setValue(s2)
       .setSize(200, 20)
       .setCaptionLabel("branchiness")
@@ -126,16 +125,16 @@ class ChildApplet extends PApplet {
 
   public void draw() {
     background(150);
-    
-    if(!saveMatrix){
-    mutationRate = 0.00015+m1*.2;
-    s1f = s1;
-    s2f = s2;
-    s3i = s3;
-    s4f=s4;
+
+    if (!saveMatrix) {
+      mutationRate = 0.00015+m1*.2;
+      s1f = s1;
+      s2f = s2;
+      s3i = s3;
+      s4f=s4;
     }
 
-    clusterSize=int(c1);
+    if (!saveMatrix)    clusterSize=int(c1);
 
 
     float cellCount= 0;
@@ -150,6 +149,8 @@ class ChildApplet extends PApplet {
     text("Average # of Cells: "+nf(cellCount, 1, 1), 25, row);
     row+=20;
     text("Mutation Rate: "+mutationRate, 25, row);
+    row+=20;
+    text("Generations: "+nGenerations, 25, row);
     //row+=10;
     //text("Fitness Rate: "+mutationRate, 25, row);
   }
