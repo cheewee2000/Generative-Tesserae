@@ -4,7 +4,7 @@
 
 Current Version: Generative Tesserae p5js
 
-## live editor https://editor.p5js.org/cheewee2000/sketches/D1LCrLyNO
+## Live Demo/Editor https://editor.p5js.org/cheewee2000/sketches/D1LCrLyNO
 
 ## Key Concepts:
 * Cell: a single truncated octahedron
@@ -47,5 +47,9 @@ Current Version: Generative Tesserae p5js
   * cells with more than 2 neighbors get points subtracted
   * cells with 2 or less neighbors get points added
 * Number of Connections per Cell
-  * cells with the desired number of connections get added points.
+  * cells with the desired number of connections get added points
 
+## Fitness Criteria to be added
+* Public /Private
+  * Clusters that achieve public vs private Cell ratios closer to the desired ratio get points
+  * Public Cells are defined as Cells that have 3 or more connections
