@@ -36,13 +36,15 @@ boolean saveMatrix=false;
 float matrixSteps=7; //grid cols, rows
 int maxGenerations=80;
 int nGenerations=0;
+int cluserMax=56;
 
-int populationSize=300;//
+
+int populationSize=100;//
 int clusterSize=2;
 
-int nCellsX=10; //nunmber of cells in cluster row and column
-int nCellsY=10; //nunmber of cells in cluster row and column
-int nCellsZ=1; //nunmber of cells in cluster row and column
+int nCellsX=9; //nunmber of cells in cluster row and column
+int nCellsY=9; //nunmber of cells in cluster row and column
+int nCellsZ=9; //nunmber of cells in cluster row and column
 
 
 
@@ -50,7 +52,7 @@ int nCellsZ=1; //nunmber of cells in cluster row and column
 int minCells=10;
 int maxCells=20;
 
-Population population;  // Population
+Population population;  // Populations
 
 
 float mutationRate = 0.00000025;
@@ -189,8 +191,8 @@ void draw() {
     saveOBJ = false;
 
     if (saveMatrix) {
-      clusterSize+=5;
-      if (clusterSize>32) {
+      clusterSize+=8;
+      if (clusterSize>56) {
         clusterSize=2;
         s2f+=2/matrixSteps;
       }
